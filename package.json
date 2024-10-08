@@ -3,7 +3,7 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"dev": "next dev",
+		"dev": "concurrently --names \"DB,APP\" -c \"blue,green\" \"pnpm db:start\" \"next dev\"",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
@@ -34,6 +34,7 @@
 		"@types/pg": "^8.11.10",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
+		"concurrently": "^9.0.1",
 		"drizzle-kit": "^0.25.0",
 		"pg": "^8.13.0",
 		"postcss": "^8",

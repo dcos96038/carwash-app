@@ -9,5 +9,17 @@
 	"editor.codeActionsOnSave": {
 		"quickfix.biome": "explicit",
 		"source.organizeImports.biome": "explicit"
-	}
+	},
+	"sqltools.connections": [
+		{
+			"previewLimit": 50,
+			"server": "localhost",
+			"port": 5432,
+			"driver": "PostgreSQL",
+			"name": "carwash",
+			"database": "carwash",
+			"username": "admin",
+			"password": "test123"
+		}
+	]
 }

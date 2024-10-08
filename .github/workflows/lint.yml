@@ -30,6 +30,6 @@ jobs:
         run: |
           pnpm install
 
-      - name: Run Lint
+      - name: Run Biome Lint
         run: |
-          pnpm lint
+          pnpm biome check

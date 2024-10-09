@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 .env
+
+# migrations
+src/db/migrations/*
 # dependencies
 /node_modules
 /.pnp

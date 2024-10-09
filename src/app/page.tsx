@@ -1,5 +1,5 @@
-import { db } from "@/db";
-import { carwashLocations } from "@/db/schema";
+import { db } from "../../db";
+import { carwashLocations } from "../../db/schema";
 import { ClientHomePage } from "./page.client";
 
 export default async function Home() {

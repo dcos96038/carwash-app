@@ -12,7 +12,7 @@
 		"db:start:pwsl": "docker run --rm --name carwash_app -p 5432:5432 -v %cd%/db-data:/var/lib/postgresql/data -e POSTGRES_PASSWORD=test123 -e POSTGRES_DB=carwash -e POSTGRES_USER=admin postgres",
 		"db:generate": "drizzle-kit generate --config=drizzle.config.ts",
 		"db:push": "drizzle-kit push",
-		"db:bootstrap": "db:push && tsx src/db/seed.ts",
+		"db:bootstrap": "db:push && tsx db/seed.ts",
 		"db:studio": "drizzle-kit studio"
 	},
 	"dependencies": {

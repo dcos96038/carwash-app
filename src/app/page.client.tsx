@@ -3,7 +3,7 @@ import { icon } from "leaflet";
 import { useEffect, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 
-import type { carwashLocations } from "@/db/schema";
+import type { carwashLocations } from "../../db/schema";
 
 type CarwashLocation = typeof carwashLocations.$inferSelect;
 

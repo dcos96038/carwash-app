@@ -1,0 +1,1 @@
+ALTER TABLE "carwash_locations" ADD COLUMN "logo" text;

@@ -1,9 +1,24 @@
-import { db } from "../../db";
-import { carwashLocations } from "../../db/schema";
 import { ClientHomePage } from "./page.client";
+import { LocationsService } from "@/services/locations.service";
+import { Sidebar } from "./components/sidebar";
+import { getLocationsAction } from "./actions/actions";
 
-export default async function Home() {
-	const markers = await db.select().from(carwashLocations);
+export default async function Home({
+	searchParams,
+}: {
+	searchParams: {
+		q?: string;
+	};
+}) {
+	const query = searchParams.q;
+	const [locations] = await getLocationsAction({ query });
 
-	return <ClientHomePage markers={markers} />;
+	return (
+		<main className="bg-gray-950 flex">
+			<Sidebar initialLocations={locations || []} />
+			<div className="rounded-lg w-full overflow-hidden">
+				<ClientHomePage markers={locations || []} />
+			</div>
+		</main>
+	);
 }

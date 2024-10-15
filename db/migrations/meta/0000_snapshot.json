@@ -1,5 +1,5 @@
 {
-  "id": "632bb9b1-80d4-42d5-95e0-944a9c41b6e0",
+  "id": "08fb6ba8-c8a4-4c2a-991e-64d5c796323e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -47,7 +47,13 @@
         },
         "opening_hours": {
           "name": "opening_hours",
-          "type": "text",
+          "type": "time",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "closing_hours": {
+          "name": "closing_hours",
+          "type": "time",
           "primaryKey": false,
           "notNull": false
         }

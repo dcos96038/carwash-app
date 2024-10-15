@@ -5,5 +5,6 @@ CREATE TABLE IF NOT EXISTS "carwash_locations" (
 	"latitude" double precision NOT NULL,
 	"longitude" double precision NOT NULL,
 	"contact_number" text,
-	"opening_hours" text
+	"opening_hours" time,
+	"closing_hours" time
 );

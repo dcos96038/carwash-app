@@ -19,6 +19,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({ onSubmit }) => {
 				className="rounded-r-none border-r-transparent"
 				value={query || ""}
 				onChange={(e) => setQuery(e.target.value)}
+				onKeyDown={(e) => e.key === "Enter" && onSubmit(query || "")}
 			/>
 			<Button
 				onClick={() => onSubmit(query || "")}

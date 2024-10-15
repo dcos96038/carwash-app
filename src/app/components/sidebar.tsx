@@ -16,7 +16,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ initialLocations }) => {
 	const [locations, setLocations] =
 		useState<CarwashLocation[]>(initialLocations);
 
-	const { execute } = useServerAction(getLocationsAction);
+	const { execute, isPending } = useServerAction(getLocationsAction);
 
 	const fetchLocations = async (query: string) => {
 		const [data] = await execute({ query });
@@ -31,7 +31,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ initialLocations }) => {
 			</div>
 			<SearchInput onSubmit={fetchLocations} />
 			<div className="flex flex-col gap-2">
-				{locations.length ? (
+				{isPending && (
+					<div className="text-center text-gray-400">Loading...</div>
+				)}
+				{locations.length && !isPending ? (
 					locations.map((m) => (
 						<div key={m.id} className="flex gap-4 items-center px-1 py-2">
 							<Avatar className="size-12">
@@ -49,7 +52,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ initialLocations }) => {
 								<span className="text-xs font-medium">
 									{m.address.split(",")[0]}, {m.address.split(",")[1]} -{" "}
 									<span className="text-green-600 italic">
-										Cierra: {m.openingHours}
+										Cierra: {m.closingHours}
 									</span>
 								</span>
 							</div>

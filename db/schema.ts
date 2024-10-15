@@ -15,4 +15,5 @@ export const carwashLocations = pgTable("carwash_locations", {
 	contactNumber: text("contact_number"),
 	openingHours: time("opening_hours"),
 	closingHours: time("closing_hours"),
+	logo: text("logo"),
 });

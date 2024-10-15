@@ -1,13 +1,18 @@
-import { doublePrecision, pgTable, text, uuid } from "drizzle-orm/pg-core";
+import {
+	pgTable,
+	uuid,
+	text,
+	doublePrecision,
+	time,
+} from "drizzle-orm/pg-core";
 
-const carwashLocations = pgTable("carwash_locations", {
-	id: uuid("id").defaultRandom().primaryKey(),
+export const carwashLocations = pgTable("carwash_locations", {
+	id: uuid("id").defaultRandom().primaryKey().notNull(),
 	name: text("name").notNull(),
 	address: text("address").notNull(),
 	latitude: doublePrecision("latitude").notNull(),
 	longitude: doublePrecision("longitude").notNull(),
 	contactNumber: text("contact_number"),
-	openingHours: text("opening_hours"),
+	openingHours: time("opening_hours"),
+	closingHours: time("closing_hours"),
 });
-
-export { carwashLocations };

@@ -1,14 +1,15 @@
 import { db } from ".";
 import { carwashLocations } from "./schema";
 
-const seedData = [
+const seedData: Omit<typeof carwashLocations.$inferSelect, "id">[] = [
 	{
 		name: "Car Wash Lules Centro",
 		address: "Av. San Martín 123, Lules, Tucumán, Argentina",
 		latitude: -26.922467,
 		longitude: -65.344527,
 		contactNumber: "+54 381 456-7890",
-		openingHours: "8 AM - 6 PM",
+		openingHours: "09:00:00",
+		closingHours: "19:00:00",
 	},
 	{
 		name: "Car Wash Los Nogales",
@@ -16,7 +17,8 @@ const seedData = [
 		latitude: -26.945645,
 		longitude: -65.370483,
 		contactNumber: "+54 381 987-6543",
-		openingHours: "9 AM - 5 PM",
+		openingHours: "10:00:00",
+		closingHours: "20:00:00",
 	},
 	{
 		name: "Car Wash Sol y Lluvia",
@@ -24,16 +26,13 @@ const seedData = [
 		latitude: -26.927355,
 		longitude: -65.349123,
 		contactNumber: "+54 381 321-9876",
-		openingHours: "8 AM - 8 PM",
+		openingHours: "08:00:00",
+		closingHours: "18:00:00",
 	},
 ];
 
 async function main() {
 	async function seedCarwashLocations() {
-		console.log("Resetting carwash locations table...");
-		await db.delete(carwashLocations);
-		console.log("Table reset completed!");
-
 		console.log("Seeding carwash locations...");
 		await db.insert(carwashLocations).values(seedData);
 		console.log("Seeding completed!");

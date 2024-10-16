@@ -1,5 +1,4 @@
 import { ClientHomePage } from "./page.client";
-import { LocationsService } from "@/services/locations.service";
 import { Sidebar } from "./components/sidebar";
 import { getLocationsAction } from "./actions/actions";
 

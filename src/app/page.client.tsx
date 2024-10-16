@@ -1,11 +1,8 @@
 "use client";
+import type { CarwashLocation } from "@/types/locations.types";
 import { icon } from "leaflet";
 import { useEffect, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
-
-import type { carwashLocations } from "../../db/schema";
-
-type CarwashLocation = typeof carwashLocations.$inferSelect;
 
 const customMarker = icon({
 	iconUrl: "https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png",
@@ -19,8 +16,6 @@ export function ClientHomePage({
 }: {
 	markers: CarwashLocation[];
 }) {
-	console.log("CLIENT", markers);
-
 	const [location, setLocation] = useState<{ lat: number; lng: number }>();
 
 	useEffect(() => {

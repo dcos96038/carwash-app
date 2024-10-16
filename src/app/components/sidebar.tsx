@@ -7,6 +7,7 @@ import { SearchInput } from "./search-input";
 import { useState } from "react";
 import { useServerAction } from "zsa-react";
 import { getLocationsAction } from "../actions/actions";
+import { cn, isClosed } from "@/lib/utils";
 
 interface SidebarProps {
 	initialLocations: CarwashLocation[];
@@ -36,7 +37,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ initialLocations }) => {
 				)}
 				{locations.length && !isPending ? (
 					locations.map((m) => (
-						<div key={m.id} className="flex gap-4 items-center px-1 py-2">
+						<div
+							key={m.id}
+							className="flex gap-4 items-center px-1 py-2 text-left w-full hover:bg-gray-700 focus:outline-none"
+						>
 							<Avatar className="size-12">
 								<AvatarImage src="https://github.com/shadcn.png" />
 								<AvatarFallback>
@@ -51,9 +55,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ initialLocations }) => {
 								<span className="font-semibold text-sm italic">{m.name}</span>
 								<span className="text-xs font-medium">
 									{m.address.split(",")[0]}, {m.address.split(",")[1]} -{" "}
-									<span className="text-green-600 italic">
-										Cierra: {m.closingHours}
+									<span
+										className={cn("italic", {
+											"text-red-600": isClosed(m.closingHours),
+											"text-green-600": !isClosed(m.closingHours),
+										})}
+									>
+										{isClosed(m.closingHours) ? "Cerrado" : "Abierto"}
 									</span>
+									<div className="text-gray-400">
+										Horario: {m.openingHours} - {m.closingHours}
+									</div>
 								</span>
 							</div>
 						</div>

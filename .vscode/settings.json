@@ -21,5 +21,6 @@
 			"username": "admin",
 			"password": "test123"
 		}
-	]
+	],
+	"editor.defaultFormatter": "biomejs.biome"
 }

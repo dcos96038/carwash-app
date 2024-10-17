@@ -1,10 +1,16 @@
 "use client";
+
+import { useMap } from "@/context/use-map";
 import type { CarwashLocation } from "@/types/locations.types";
 import { icon } from "leaflet";
 import { useEffect, useState } from "react";
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { Sidebar } from "./components/sidebar";
+import { useCoordinates } from "@/hooks/use-coordinates";
+import { useServerAction } from "zsa-react";
+import { getLocationsAction } from "./actions/actions";
 
-const customMarker = icon({
+const locationMarker = icon({
 	iconUrl: "https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png",
 	iconSize: [25, 41],
 	iconAnchor: [10, 41],
@@ -12,91 +18,100 @@ const customMarker = icon({
 });
 
 export function ClientHomePage({
-	markers,
+	locations,
 }: {
-	markers: CarwashLocation[];
+	locations: CarwashLocation[];
 }) {
-	const [location, setLocation] = useState<{ lat: number; lng: number }>();
+	const [carwashLocations, setCarwashLocations] =
+		useState<CarwashLocation[]>(locations);
+	const [userLocation, setUserLocation] = useState<GeolocationPosition | null>(
+		null,
+	);
+	const { setMap } = useMap();
+
+	const { nwLat, nwLng, seLat, seLng } = useCoordinates();
+
+	const { execute, isPending } = useServerAction(getLocationsAction);
 
 	useEffect(() => {
-		if (typeof window !== "undefined") {
-			if (navigator.geolocation) {
-				console.log("Geolocation is supported by this browser.");
-
-				navigator.geolocation.getCurrentPosition(
-					(position: GeolocationPosition) => {
-						const coords = {
-							lat: position.coords.latitude,
-							lng: position.coords.longitude,
-						};
-						setLocation(coords);
-						console.log(`Latitude: ${coords.lat} Longitude: ${coords.lng}`);
-					},
-					(error: GeolocationPositionError) => {
-						console.log(`Error getting location: ${error.message}`);
-					},
-				);
-			} else {
-				console.log("Geolocation is not supported by this browser.");
-			}
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(
+				(position: GeolocationPosition) => {
+					setUserLocation(position);
+				},
+				(error: GeolocationPositionError) => {
+					console.log(`Error getting location: ${error.message}`);
+				},
+			);
+		} else {
+			console.log("Geolocation is not supported by this browser.");
 		}
 	}, []);
 
-	if (!location) {
-		return <p>Loading location...</p>;
-	}
-
-	return (
-		<MapContainer
-			center={[location.lat, location.lng]}
-			zoom={50}
-			scrollWheelZoom={false}
-			style={{ height: "100vh", width: "100%" }}
-			trackResize={true}
-		>
-			<TileLayer
-				className="bg-blue-500"
-				attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-				url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-			/>
-			<MapHelper markers={markers} />
-		</MapContainer>
-	);
-}
-
-const MapHelper = ({ markers }: { markers: CarwashLocation[] }) => {
-	const map = useMap();
-
 	useEffect(() => {
-		const onBoundsChange = () => {
-			const bounds = map.getBounds();
-			const southWest = bounds.getSouthWest();
-			const northEast = bounds.getNorthEast();
-			console.log("Bounds changed:");
-			console.log("Southwest corner:", southWest.lat, southWest.lng);
-			console.log("Northeast corner:", northEast.lat, northEast.lng);
+		const fetchMarkers = async () => {
+			const [data] = await execute({
+				coords: {
+					northWestLat: nwLat || 0,
+					northWestLng: nwLng || 0,
+					southEastLat: seLat || 0,
+					southEastLng: seLng || 0,
+				},
+			});
+			setCarwashLocations(data || []);
 		};
 
-		map.on("moveend", onBoundsChange);
+		fetchMarkers();
+	}, [nwLat, nwLng, seLat, seLng, execute]);
 
-		return () => {
-			map.off("moveend", onBoundsChange);
-		};
-	}, [map]);
+	// if (!userLocation) {
+	// 	return <p>Loading location...</p>;
+	// }
 
 	return (
 		<>
-			{markers.map((marker) => (
-				<Marker
-					icon={customMarker}
-					key={marker.id}
-					position={[marker.latitude, marker.longitude]}
+			<Sidebar locations={carwashLocations || []} loading={isPending} />
+			<div className="rounded-lg w-full overflow-hidden">
+				<MapContainer
+					zoom={70}
+					center={[
+						userLocation?.coords.latitude || 0,
+						userLocation?.coords.longitude || 0,
+					]}
+					scrollWheelZoom={false}
+					style={{ height: "100vh", width: "100%" }}
+					trackResize={true}
+					ref={setMap}
 				>
-					<Popup>
-						<h2>{marker.name}</h2>
-					</Popup>
-				</Marker>
-			))}
+					<TileLayer
+						className="bg-blue-500"
+						attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+						url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+					/>
+					<Marker
+						icon={locationMarker}
+						position={[
+							userLocation?.coords.latitude || 0,
+							userLocation?.coords.longitude || 0,
+						]}
+					>
+						<Popup>
+							<h2>Your Location</h2>
+						</Popup>
+					</Marker>
+					{carwashLocations.map((marker) => (
+						<Marker
+							icon={locationMarker}
+							key={marker.id}
+							position={[marker.latitude, marker.longitude]}
+						>
+							<Popup>
+								<h2>{marker.name}</h2>
+							</Popup>
+						</Marker>
+					))}
+				</MapContainer>
+			</div>
 		</>
 	);
-};
+}

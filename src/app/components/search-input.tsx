@@ -2,15 +2,15 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useSearchQuery } from "@/hooks/use-search-query";
 import { Search } from "lucide-react";
-import { parseAsString, useQueryState } from "nuqs";
 
 interface SearchInputProps {
 	onSubmit: (query: string) => void;
 }
 
 export const SearchInput: React.FC<SearchInputProps> = ({ onSubmit }) => {
-	const [query, setQuery] = useQueryState("q", parseAsString);
+	const { query, setQuery } = useSearchQuery();
 
 	return (
 		<div className="flex justify-center items-center">

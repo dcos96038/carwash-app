@@ -10,14 +10,7 @@ import { useCoordinates } from "@/hooks/use-coordinates";
 import { useServerAction } from "zsa-react";
 import { getLocationsAction } from "./actions/actions";
 
-const carwashMarker = icon({
-	iconUrl: "https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png",
-	iconSize: [25, 41],
-	iconAnchor: [10, 41],
-	popupAnchor: [2, -40],
-});
-
-const userLocationMarker = icon({
+const locationMarker = icon({
 	iconUrl: "https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png",
 	iconSize: [25, 41],
 	iconAnchor: [10, 41],
@@ -96,7 +89,7 @@ export function ClientHomePage({
 						url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 					/>
 					<Marker
-						icon={userLocationMarker}
+						icon={locationMarker}
 						position={[
 							userLocation?.coords.latitude || 0,
 							userLocation?.coords.longitude || 0,
@@ -108,7 +101,7 @@ export function ClientHomePage({
 					</Marker>
 					{carwashLocations.map((marker) => (
 						<Marker
-							icon={carwashMarker}
+							icon={locationMarker}
 							key={marker.id}
 							position={[marker.latitude, marker.longitude]}
 						>

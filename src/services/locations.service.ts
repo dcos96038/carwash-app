@@ -2,24 +2,16 @@ import type { CarwashLocation } from "@/types/locations.types";
 import { db } from "../../db";
 import { carwashLocations } from "../../db/schema";
 
-interface GetMarkersProps {
-	searchQuery?: string;
-	coords?: {
-		southEastLat: number;
-		southEastLng: number;
-		northWestLat: number;
-		northWestLng: number;
-	};
-}
-
 export class LocationsService {
 	private readonly db = db;
 	private readonly table = carwashLocations;
 
-	async getMarkers({
-		coords,
-		searchQuery,
-	}: GetMarkersProps): Promise<CarwashLocation[]> {
+	async getMarkers(coords?: {
+		southEastLat: number;
+		southEastLng: number;
+		northWestLat: number;
+		northWestLng: number;
+	}): Promise<CarwashLocation[]> {
 		return await this.db.query.carwashLocations.findMany({
 			...(coords && {
 				where: (locations, { between }) =>
@@ -34,11 +26,13 @@ export class LocationsService {
 						coords.southEastLng,
 					),
 			}),
-			...(searchQuery &&
-				searchQuery !== "" && {
-					where: (locations, { ilike }) =>
-						ilike(locations.name, `%${searchQuery}%`),
-				}),
+		});
+	}
+
+	async searchLocations(searchQuery: string): Promise<CarwashLocation[]> {
+		return await this.db.query.carwashLocations.findMany({
+			where: (locations, { ilike }) =>
+				ilike(locations.name, `%${searchQuery}%`),
 		});
 	}
 }

@@ -9,6 +9,7 @@ import { Sidebar } from "./components/sidebar";
 import { useCoordinates } from "@/hooks/use-coordinates";
 import { useServerAction } from "zsa-react";
 import { getLocationsAction } from "./actions/actions";
+import { SearchDrawer } from "./components/search-drawer";
 
 const locationMarker = icon({
 	iconUrl: "https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png",
@@ -87,47 +88,52 @@ export function ClientHomePage({
 	return (
 		<>
 			<Sidebar locations={carwashLocations || []} />
-			<div className="rounded-lg w-full overflow-hidden">
+			<div className="rounded-lg w-full overflow-hidden relative">
 				{userLocation ? (
-					<MapContainer
-						zoom={70}
-						scrollWheelZoom={false}
-						style={{ height: "100vh", width: "100%" }}
-						trackResize={true}
-						center={[
-							userLocation.coords.latitude,
-							userLocation.coords.longitude,
-						]}
-						ref={setMap}
-					>
-						<TileLayer
-							className="bg-blue-500"
-							attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-							url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-						/>
-						<Marker
-							icon={locationMarker}
-							position={[
+					<>
+						<div className="absolute z-[1000] bottom-10 right-10">
+							<SearchDrawer />
+						</div>
+						<MapContainer
+							zoom={70}
+							scrollWheelZoom={false}
+							style={{ height: "100vh", width: "100%" }}
+							trackResize={true}
+							center={[
 								userLocation.coords.latitude,
 								userLocation.coords.longitude,
 							]}
+							ref={setMap}
 						>
-							<Popup>
-								<h2>Your Location</h2>
-							</Popup>
-						</Marker>
-						{carwashLocations.map((marker) => (
+							<TileLayer
+								className="bg-blue-500"
+								attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+								url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+							/>
 							<Marker
 								icon={locationMarker}
-								key={marker.id}
-								position={[marker.latitude, marker.longitude]}
+								position={[
+									userLocation.coords.latitude,
+									userLocation.coords.longitude,
+								]}
 							>
 								<Popup>
-									<h2>{marker.name}</h2>
+									<h2>Your Location</h2>
 								</Popup>
 							</Marker>
-						))}
-					</MapContainer>
+							{carwashLocations.map((marker) => (
+								<Marker
+									icon={locationMarker}
+									key={marker.id}
+									position={[marker.latitude, marker.longitude]}
+								>
+									<Popup>
+										<h2>{marker.name}</h2>
+									</Popup>
+								</Marker>
+							))}
+						</MapContainer>
+					</>
 				) : (
 					<div className="text-center text-gray-400">Loading...</div>
 				)}

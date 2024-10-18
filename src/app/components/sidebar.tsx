@@ -3,20 +3,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { CarwashLocation } from "@/types/locations.types";
 import { CarFront } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useServerAction } from "zsa-react";
-import { getLocationsAction } from "../actions/actions";
 import { cn, isClosed } from "@/lib/utils";
 import { useMap } from "@/context/use-map";
-import { useCoordinates } from "@/hooks/use-coordinates";
-import { useSearchQuery } from "@/hooks/use-search-query";
 
 interface SidebarProps {
 	locations: CarwashLocation[];
-	loading: boolean;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ locations, loading }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ locations }) => {
 	const { moveMap } = useMap();
 
 	return (
@@ -26,8 +20,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ locations, loading }) => {
 				<h1 className="font-semibold text-xl text-center">Carwash App</h1>
 			</div>
 			<div className="flex flex-col gap-2">
-				{loading && <div className="text-center text-gray-400">Loading...</div>}
-				{locations.length && !loading ? (
+				{locations.length ? (
 					locations.map((m) => (
 						<button
 							type="button"

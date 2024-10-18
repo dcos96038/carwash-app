@@ -31,12 +31,14 @@ export const MapProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	const moveMap = (lat: number, lng: number) => {
 		if (!map) return;
+
+		map.setZoomAround([lat, lng], 100);
 		map.panTo([lat, lng]);
 	};
 
 	useEffect(() => {
+		if (!map) return;
 		const onBoundsChange = () => {
-			if (!map) return;
 			const bounds = map.getBounds();
 
 			setNwLat(bounds.getNorthWest().lat);
@@ -45,10 +47,10 @@ export const MapProvider: React.FC<{ children: React.ReactNode }> = ({
 			setSeLng(bounds.getSouthEast().lng);
 		};
 
-		map?.on("moveend", onBoundsChange);
+		map.on("moveend", onBoundsChange);
 
 		return () => {
-			map?.off("moveend", onBoundsChange);
+			map.off("moveend", onBoundsChange);
 		};
 	}, [map, setNwLat, setNwLng, setSeLat, setSeLng]);
 

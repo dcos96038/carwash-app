@@ -1,5 +1,4 @@
 import { ClientHomePage } from "./page.client";
-import { Sidebar } from "./components/sidebar";
 import { getLocationsAction } from "./actions/actions";
 import { MapProvider } from "@/context/use-map";
 import { searchParamsCache } from "@/lib/search-params";

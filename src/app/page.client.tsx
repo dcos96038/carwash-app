@@ -27,11 +27,15 @@ export function ClientHomePage({
 	const [userLocation, setUserLocation] = useState<GeolocationPosition | null>(
 		null,
 	);
+	const [userLocationError, setUserLocationError] = useState<string | null>(
+		null,
+	);
+
 	const { setMap } = useMap();
 
 	const { nwLat, nwLng, seLat, seLng } = useCoordinates();
 
-	const { execute, isPending } = useServerAction(getLocationsAction);
+	const { execute } = useServerAction(getLocationsAction);
 
 	useEffect(() => {
 		if (navigator.geolocation) {
@@ -41,6 +45,12 @@ export function ClientHomePage({
 				},
 				(error: GeolocationPositionError) => {
 					console.log(`Error getting location: ${error.message}`);
+					setUserLocationError(error.message);
+				},
+				{
+					enableHighAccuracy: false,
+					timeout: 20000,
+					maximumAge: Number.POSITIVE_INFINITY,
 				},
 			);
 		} else {
@@ -50,12 +60,14 @@ export function ClientHomePage({
 
 	useEffect(() => {
 		const fetchMarkers = async () => {
+			if (!nwLat || !nwLng || !seLat || !seLng) return;
+
 			const [data] = await execute({
 				coords: {
-					northWestLat: nwLat || 0,
-					northWestLng: nwLng || 0,
-					southEastLat: seLat || 0,
-					southEastLng: seLng || 0,
+					northWestLat: nwLat,
+					northWestLng: nwLng,
+					southEastLat: seLat,
+					southEastLng: seLng,
 				},
 			});
 			setCarwashLocations(data || []);
@@ -64,53 +76,61 @@ export function ClientHomePage({
 		fetchMarkers();
 	}, [nwLat, nwLng, seLat, seLng, execute]);
 
-	// if (!userLocation) {
-	// 	return <p>Loading location...</p>;
-	// }
+	if (userLocationError) {
+		return (
+			<div className="text-center text-red-500">
+				{userLocationError}. Please enable location services.
+			</div>
+		);
+	}
 
 	return (
 		<>
-			<Sidebar locations={carwashLocations || []} loading={isPending} />
+			<Sidebar locations={carwashLocations || []} />
 			<div className="rounded-lg w-full overflow-hidden">
-				<MapContainer
-					zoom={70}
-					center={[
-						userLocation?.coords.latitude || 0,
-						userLocation?.coords.longitude || 0,
-					]}
-					scrollWheelZoom={false}
-					style={{ height: "100vh", width: "100%" }}
-					trackResize={true}
-					ref={setMap}
-				>
-					<TileLayer
-						className="bg-blue-500"
-						attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-						url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-					/>
-					<Marker
-						icon={locationMarker}
-						position={[
-							userLocation?.coords.latitude || 0,
-							userLocation?.coords.longitude || 0,
+				{userLocation ? (
+					<MapContainer
+						zoom={70}
+						scrollWheelZoom={false}
+						style={{ height: "100vh", width: "100%" }}
+						trackResize={true}
+						center={[
+							userLocation.coords.latitude,
+							userLocation.coords.longitude,
 						]}
+						ref={setMap}
 					>
-						<Popup>
-							<h2>Your Location</h2>
-						</Popup>
-					</Marker>
-					{carwashLocations.map((marker) => (
+						<TileLayer
+							className="bg-blue-500"
+							attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+							url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+						/>
 						<Marker
 							icon={locationMarker}
-							key={marker.id}
-							position={[marker.latitude, marker.longitude]}
+							position={[
+								userLocation.coords.latitude,
+								userLocation.coords.longitude,
+							]}
 						>
 							<Popup>
-								<h2>{marker.name}</h2>
+								<h2>Your Location</h2>
 							</Popup>
 						</Marker>
-					))}
-				</MapContainer>
+						{carwashLocations.map((marker) => (
+							<Marker
+								icon={locationMarker}
+								key={marker.id}
+								position={[marker.latitude, marker.longitude]}
+							>
+								<Popup>
+									<h2>{marker.name}</h2>
+								</Popup>
+							</Marker>
+						))}
+					</MapContainer>
+				) : (
+					<div className="text-center text-gray-400">Loading...</div>
+				)}
 			</div>
 		</>
 	);

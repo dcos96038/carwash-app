@@ -29,8 +29,6 @@ export const SearchDrawer = () => {
 
 	const handleSearch = useCallback(
 		async (searchValue: string) => {
-			console.log("searchValue", searchValue);
-
 			const [data, error] = await execute(searchValue);
 
 			if (error) {

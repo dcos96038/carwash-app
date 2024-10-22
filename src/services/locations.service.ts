@@ -1,10 +1,8 @@
 import type { CarwashLocation } from "@/types/locations.types";
 import { db } from "../../db";
-import { carwashLocations } from "../../db/schema";
 
 export class LocationsService {
 	private readonly db = db;
-	private readonly table = carwashLocations;
 
 	async getMarkers(coords?: {
 		southEastLat: number;

@@ -10,7 +10,7 @@ export class LocationsService {
 		northWestLat: number;
 		northWestLng: number;
 	}): Promise<CarwashLocation[]> {
-		return await this.db.query.carwashLocations.findMany({
+		return await this.db.query.carwash.findMany({
 			...(coords && {
 				where: (locations, { between }) =>
 					between(
@@ -28,7 +28,7 @@ export class LocationsService {
 	}
 
 	async searchLocations(searchQuery: string): Promise<CarwashLocation[]> {
-		return await this.db.query.carwashLocations.findMany({
+		return await this.db.query.carwash.findMany({
 			where: (locations, { ilike }) =>
 				ilike(locations.name, `%${searchQuery}%`),
 		});

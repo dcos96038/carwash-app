@@ -1,8 +1,13 @@
 import { AuthService } from "@/services/auth.service";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import type { NextAuthConfig } from "next-auth";
+import {
+	users,
+	accounts,
+	sessions,
+	verificationTokens,
+} from "../../db/schema/user";
 import { db } from "../../db";
-import { users, accounts, sessions, verificationTokens } from "../../db/schema";
 
 export const authConfig = {
 	basePath: "/api/auth",

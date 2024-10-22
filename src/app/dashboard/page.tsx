@@ -13,7 +13,7 @@ export default async function Page() {
 			<h1 className="text-4xl font-semibold text-center">Welcome</h1>
 
 			<div>
-				<pre className="text-lg italic font-medium">
+				<pre className="text-lg italic font-medium max-w-96 text-wrap">
 					{JSON.stringify(session.user, null, 2)}
 				</pre>
 			</div>

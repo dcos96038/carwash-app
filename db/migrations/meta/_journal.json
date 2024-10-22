@@ -15,6 +15,20 @@
       "when": 1728967120349,
       "tag": "0001_long_lightspeed",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1729550463190,
+      "tag": "0002_normal_lethal_legion",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1729553367255,
+      "tag": "0003_glamorous_cassandra_nova",
+      "breakpoints": true
     }
   ]
 }

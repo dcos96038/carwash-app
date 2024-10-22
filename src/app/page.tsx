@@ -1,6 +1,6 @@
 import { ClientHomePage } from "./page.client";
-import { getLocationsAction } from "./actions/actions";
-import { MapProvider } from "@/context/use-map";
+import { getLocationsAction } from "./actions";
+
 import { searchParamsCache } from "@/lib/search-params";
 
 export default async function Home({
@@ -20,10 +20,8 @@ export default async function Home({
 	});
 
 	return (
-		<main className="bg-gray-950 flex flex-1">
-			<MapProvider>
-				<ClientHomePage locations={locations || []} />
-			</MapProvider>
+		<main className="flex flex-1">
+			<ClientHomePage locations={locations || []} />
 		</main>
 	);
 }

@@ -8,7 +8,7 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { Sidebar } from "./components/sidebar";
 import { useCoordinates } from "@/hooks/use-coordinates";
 import { useServerAction } from "zsa-react";
-import { getLocationsAction } from "./actions/actions";
+import { getLocationsAction } from "./actions";
 import { SearchDrawer } from "./components/search-drawer";
 
 const locationMarker = icon({

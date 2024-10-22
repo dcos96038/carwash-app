@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { db } from "../../db";
-import { users } from "../../db/schema";
 import bcrypt from "bcryptjs";
+import { users } from "../../db/schema/user";
 
 export class AuthService {
 	private readonly db = db;

@@ -1,27 +1,14 @@
 import {
-	pgTable,
-	uuid,
-	text,
-	doublePrecision,
-	time,
-	timestamp,
-	integer,
-	primaryKey,
 	boolean,
+	integer,
+	pgTable,
+	primaryKey,
+	text,
+	timestamp,
+	uuid,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
-
-export const carwashLocations = pgTable("carwash_locations", {
-	id: uuid("id").defaultRandom().primaryKey().notNull(),
-	name: text("name").notNull(),
-	address: text("address").notNull(),
-	latitude: doublePrecision("latitude").notNull(),
-	longitude: doublePrecision("longitude").notNull(),
-	contactNumber: text("contact_number"),
-	openingHours: time("opening_hours"),
-	closingHours: time("closing_hours"),
-	logo: text("logo"),
-});
+import { defaultColumns } from "../lib";
 
 export const users = pgTable("user", {
 	id: text("id")
@@ -100,3 +87,12 @@ export const authenticators = pgTable(
 		}),
 	}),
 );
+
+export const customer = pgTable("customer", {
+	id: uuid("id").defaultRandom().primaryKey().notNull(),
+	...defaultColumns,
+	userId: text("user_id")
+		.notNull()
+		.references(() => users.id, { onDelete: "cascade" }),
+	contactNumber: text("contact_number"),
+});

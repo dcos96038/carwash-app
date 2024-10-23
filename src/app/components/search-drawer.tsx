@@ -16,7 +16,7 @@ import { Search } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useDebounceCallback } from "usehooks-ts";
 import { useServerAction } from "zsa-react";
-import { searchLocations } from "../actions/actions";
+import { searchLocations } from "../actions";
 import type { CarwashLocation } from "@/types/locations.types";
 import { LocationButton } from "./location-button";
 
@@ -57,7 +57,7 @@ export const SearchDrawer = () => {
 				</span>{" "}
 				<Search color="white" />
 			</DrawerTrigger>
-			<DrawerContent className="z-[1000]">
+			<DrawerContent className="z-[1000] pb-20">
 				<DrawerHeader>
 					<DrawerTitle>Search for a car wash</DrawerTitle>
 					<DrawerDescription>Find a car wash by name</DrawerDescription>
@@ -85,15 +85,6 @@ export const SearchDrawer = () => {
 						</span>
 					</div>
 				)}
-
-				<DrawerFooter className="">
-					<Button onClick={() => handleSearch(searchValue)}>Submit</Button>
-					<DrawerClose asChild>
-						<Button variant="outline" className="w-full">
-							Cancel
-						</Button>
-					</DrawerClose>
-				</DrawerFooter>
 			</DrawerContent>
 		</Drawer>
 	);

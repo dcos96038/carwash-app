@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
+import { AppProviders } from "@/components/providers";
 
 const geistSans = localFont({
 	src: "./fonts/GeistVF.woff",
@@ -29,7 +30,9 @@ export default function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
 			>
-				<div className="flex min-h-screen">{children}</div>
+				<AppProviders>
+					<div className="flex min-h-screen">{children}</div>
+				</AppProviders>
 			</body>
 		</html>
 	);

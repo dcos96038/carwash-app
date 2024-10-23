@@ -13,7 +13,7 @@ export const LogoutButton = () => {
 					redirectTo: "/",
 				});
 			}}
-			className="flex items-center gap-1"
+			className="flex items-center justify-between gap-1"
 		>
 			Logout <LogOutIcon size={14} />
 		</Button>

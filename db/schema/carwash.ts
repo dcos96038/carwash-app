@@ -8,6 +8,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { users } from "./user";
 import { defaultColumns } from "../lib";
+
 export const carwashStatus = pgEnum("carwash_status", [
 	"open",
 	"closed",

@@ -35,6 +35,7 @@ export const authConfig = {
 				session.user.name = dbUser.name || "";
 				session.user.email = dbUser.email || "";
 				session.user.image = dbUser.image || "";
+				session.user.role = dbUser.role;
 			}
 
 			return session;

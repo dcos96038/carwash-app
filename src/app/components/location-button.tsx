@@ -1,10 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useMap } from "@/context/use-map";
 import { cn, isClosed } from "@/lib/utils";
-import type { CarwashLocation } from "@/types/locations.types";
+import type { Carwash } from "@/types/locations.types";
 
 interface LocationButtonProps {
-	location: CarwashLocation;
+	location: Carwash;
 }
 
 export const LocationButton: React.FC<LocationButtonProps> = ({ location }) => {

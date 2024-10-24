@@ -10,7 +10,7 @@ export default async function Home({
 }) {
 	const { seLng, nwLat, nwLng, seLat } = searchParamsCache.parse(searchParams);
 
-	const [locations] = await getLocationsAction({
+	const locations = await getLocationsAction({
 		coords: {
 			northWestLat: Number(nwLat),
 			northWestLng: Number(nwLng),
@@ -21,7 +21,7 @@ export default async function Home({
 
 	return (
 		<main className="flex flex-1">
-			<ClientHomePage locations={locations || []} />
+			<ClientHomePage locations={locations?.data || []} />
 		</main>
 	);
 }

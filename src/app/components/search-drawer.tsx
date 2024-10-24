@@ -1,12 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
 	Drawer,
-	DrawerClose,
 	DrawerContent,
 	DrawerDescription,
-	DrawerFooter,
 	DrawerHeader,
 	DrawerTitle,
 	DrawerTrigger,
@@ -15,28 +12,30 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useDebounceCallback } from "usehooks-ts";
-import { useServerAction } from "zsa-react";
 import { searchLocations } from "../actions";
-import type { CarwashLocation } from "@/types/locations.types";
+import type { Carwash } from "@/types/locations.types";
 import { LocationButton } from "./location-button";
+import { useAction } from "next-safe-action/hooks";
 
 export const SearchDrawer = () => {
-	const { execute } = useServerAction(searchLocations);
+	const { execute } = useAction(searchLocations, {
+		onSuccess: ({ data }) => {
+			if (data?.length) {
+				setResults(data);
+			}
+		},
+		onError: (error) => {
+			console.error("Error fetching search results", error);
+		},
+	});
 	const [searchValue, setSearchValue] = useState("");
-	const [results, setResults] = useState<CarwashLocation[]>([]);
+	const [results, setResults] = useState<Carwash[]>([]);
 
 	const debouncedSearchValue = useDebounceCallback(setSearchValue, 500);
 
 	const handleSearch = useCallback(
 		async (searchValue: string) => {
-			const [data, error] = await execute(searchValue);
-
-			if (error) {
-				console.error("Error fetching search results", error);
-				return;
-			}
-
-			setResults(data);
+			execute({ query: searchValue });
 		},
 		[execute],
 	);

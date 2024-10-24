@@ -1,3 +1,6 @@
+import { auth } from "@/auth";
+import { LogoutButton } from "@/components/logout-button";
+import { Button } from "@/components/ui/button";
 import {
 	Sidebar,
 	SidebarContent,
@@ -11,7 +14,8 @@ import {
 	SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { LayoutDashboard } from "lucide-react";
-import { LogoutButton } from "./logout-button";
+import Link from "next/link";
+import { UserRolesEnum } from "@/types/user.types";
 
 const items = [
 	{
@@ -41,13 +45,15 @@ const items = [
 	// },
 ];
 
-export const AdminSidebar = () => {
+export const DashboardSidebar = async () => {
+	const session = await auth();
+
 	return (
 		<Sidebar>
 			<SidebarContent>
 				<SidebarGroup>
 					<SidebarGroupLabel className="flex items-center justify-between">
-						<span>Admin Panel</span>
+						<span>Dashboard</span>
 						<SidebarTrigger />
 					</SidebarGroupLabel>
 					<SidebarGroupContent>
@@ -55,10 +61,10 @@ export const AdminSidebar = () => {
 							{items.map((item) => (
 								<SidebarMenuItem key={item.title}>
 									<SidebarMenuButton asChild>
-										<a href={item.url}>
+										<Link href={item.url}>
 											<item.icon />
 											<span>{item.title}</span>
-										</a>
+										</Link>
 									</SidebarMenuButton>
 								</SidebarMenuItem>
 							))}
@@ -67,6 +73,11 @@ export const AdminSidebar = () => {
 				</SidebarGroup>
 			</SidebarContent>
 			<SidebarFooter>
+				{session?.user.role === UserRolesEnum.ADMIN && (
+					<Button asChild>
+						<Link href="/admin">Admin Panel</Link>
+					</Button>
+				)}
 				<LogoutButton />
 				<div className="text-center text-sm text-gray-500">
 					© {new Date().getFullYear()} All rights reserved

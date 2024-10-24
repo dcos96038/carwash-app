@@ -1,34 +1,38 @@
 "use server";
 
-import { createServerAction } from "zsa";
 import z from "zod";
 import { LocationsService } from "@/services/locations.service";
+import { actionClient } from "@/lib/safe-action-clients";
 
-export const getLocationsAction = createServerAction()
-	.input(
-		z.object({
-			coords: z
-				.object({
-					southEastLat: z.number(),
-					southEastLng: z.number(),
-					northWestLat: z.number(),
-					northWestLng: z.number(),
-				})
-				.optional(),
-		}),
-	)
-	.handler(async ({ input }) => {
+const getLocationsSchema = z.object({
+	coords: z
+		.object({
+			southEastLat: z.number(),
+			southEastLng: z.number(),
+			northWestLat: z.number(),
+			northWestLng: z.number(),
+		})
+		.optional(),
+});
+
+export const getLocationsAction = actionClient
+	.schema(getLocationsSchema)
+	.action(async ({ parsedInput }) => {
 		const locationsService = new LocationsService();
-		const result = await locationsService.getMarkers(input.coords);
+		const result = await locationsService.getMarkers(parsedInput.coords);
 
 		return result;
 	});
 
-export const searchLocations = createServerAction()
-	.input(z.string())
-	.handler(async ({ input }) => {
+const searchLocationsSchema = z.object({
+	query: z.string(),
+});
+
+export const searchLocations = actionClient
+	.schema(searchLocationsSchema)
+	.action(async ({ parsedInput }) => {
 		const locationsService = new LocationsService();
-		const result = await locationsService.searchLocations(input);
+		const result = await locationsService.searchLocations(parsedInput.query);
 
 		return result;
 	});

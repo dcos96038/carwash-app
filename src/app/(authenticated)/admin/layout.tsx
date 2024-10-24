@@ -1,6 +1,4 @@
-import { auth } from "@/auth";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { redirect } from "next/navigation";
 import { AdminSidebar } from "./components/admin-sidebar";
 
 export default async function Layout({
@@ -8,12 +6,6 @@ export default async function Layout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const session = await auth();
-
-	if (!session) {
-		redirect("/login");
-	}
-
 	return (
 		<SidebarProvider>
 			<AdminSidebar />

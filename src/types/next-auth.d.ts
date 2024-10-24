@@ -1,5 +1,4 @@
-import NextAuth from 'next-auth';
-import type { roles } from '../../db/schema/user';
+import 'next-auth';
 import type { User } from './user.types';
 
 declare module 'next-auth' {

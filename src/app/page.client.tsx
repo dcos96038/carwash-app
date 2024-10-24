@@ -76,7 +76,7 @@ export function ClientHomePage({ locations }: { locations: Carwash[] }) {
     };
 
     fetchMarkers();
-  }, [nwLat, nwLng, seLat, seLng, execute]);
+  }, [execute, nwLat, nwLng, seLat, seLng]);
 
   if (userLocationError) {
     return (

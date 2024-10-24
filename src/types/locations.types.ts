@@ -1,4 +1,4 @@
-import type { carwashLocations } from "../../db/schema";
+import type { carwash } from "../../db/schema/carwash";
 
-export type CarwashLocation = typeof carwashLocations.$inferSelect;
-export type CarwashLocationInsert = typeof carwashLocations.$inferInsert;
+export type Carwash = typeof carwash.$inferSelect;
+export type CarwashInsert = typeof carwash.$inferInsert;

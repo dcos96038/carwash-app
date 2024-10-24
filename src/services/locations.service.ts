@@ -1,4 +1,4 @@
-import type { CarwashLocation } from "@/types/locations.types";
+import type { Carwash } from "@/types/locations.types";
 import { db } from "../../db";
 
 export class LocationsService {
@@ -9,7 +9,7 @@ export class LocationsService {
 		southEastLng: number;
 		northWestLat: number;
 		northWestLng: number;
-	}): Promise<CarwashLocation[]> {
+	}): Promise<Carwash[]> {
 		return await this.db.query.carwash.findMany({
 			...(coords && {
 				where: (locations, { between }) =>
@@ -27,7 +27,7 @@ export class LocationsService {
 		});
 	}
 
-	async searchLocations(searchQuery: string): Promise<CarwashLocation[]> {
+	async searchLocations(searchQuery: string): Promise<Carwash[]> {
 		return await this.db.query.carwash.findMany({
 			where: (locations, { ilike }) =>
 				ilike(locations.name, `%${searchQuery}%`),

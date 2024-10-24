@@ -1,3 +1,3 @@
-import { pgEnum } from "drizzle-orm/pg-core";
+import { pgEnum } from 'drizzle-orm/pg-core';
 
-export const status = pgEnum("status", ["active", "inactive"]);
+export const status = pgEnum('status', ['active', 'inactive']);

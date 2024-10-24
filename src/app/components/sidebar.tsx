@@ -1,6 +1,6 @@
 "use client";
 
-import type { CarwashLocation } from "@/types/locations.types";
+import type { Carwash } from "@/types/locations.types";
 import { CarFront, LogOutIcon } from "lucide-react";
 import { LocationButton } from "./location-button";
 import { signOut, useSession } from "next-auth/react";
@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 interface SidebarProps {
-	locations: CarwashLocation[];
+	locations: Carwash[];
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ locations }) => {

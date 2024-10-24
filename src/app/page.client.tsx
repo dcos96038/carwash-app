@@ -1,15 +1,15 @@
 "use client";
 
 import { useMap } from "@/context/use-map";
-import type { CarwashLocation } from "@/types/locations.types";
+import type { Carwash } from "@/types/locations.types";
 import { icon } from "leaflet";
 import { useEffect, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { Sidebar } from "./components/sidebar";
 import { useCoordinates } from "@/hooks/use-coordinates";
-import { useServerAction } from "zsa-react";
 import { getLocationsAction } from "./actions";
 import { SearchDrawer } from "./components/search-drawer";
+import { useAction } from "next-safe-action/hooks";
 
 const locationMarker = icon({
 	iconUrl: "https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png",
@@ -21,10 +21,10 @@ const locationMarker = icon({
 export function ClientHomePage({
 	locations,
 }: {
-	locations: CarwashLocation[];
+	locations: Carwash[];
 }) {
 	const [carwashLocations, setCarwashLocations] =
-		useState<CarwashLocation[]>(locations);
+		useState<Carwash[]>(locations);
 	const [userLocation, setUserLocation] = useState<GeolocationPosition | null>(
 		null,
 	);
@@ -36,7 +36,13 @@ export function ClientHomePage({
 
 	const { nwLat, nwLng, seLat, seLng } = useCoordinates();
 
-	const { execute } = useServerAction(getLocationsAction);
+	const { execute } = useAction(getLocationsAction, {
+		onSuccess: ({ data }) => {
+			if (data?.length) {
+				setCarwashLocations(data);
+			}
+		},
+	});
 
 	useEffect(() => {
 		if (navigator.geolocation) {
@@ -63,7 +69,7 @@ export function ClientHomePage({
 		const fetchMarkers = async () => {
 			if (!nwLat || !nwLng || !seLat || !seLng) return;
 
-			const [data] = await execute({
+			execute({
 				coords: {
 					northWestLat: nwLat,
 					northWestLng: nwLng,
@@ -71,7 +77,6 @@ export function ClientHomePage({
 					southEastLng: seLng,
 				},
 			});
-			setCarwashLocations(data || []);
 		};
 
 		fetchMarkers();

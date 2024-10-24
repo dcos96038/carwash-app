@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { Users } from 'lucide-react';
+import { Car, Users } from 'lucide-react';
 import Link from 'next/link';
 
 const items = [
@@ -21,11 +21,11 @@ const items = [
     url: '/admin',
     icon: Users,
   },
-  // {
-  //   title: "Inbox",
-  //   url: "#",
-  //   icon: Inbox,
-  // },
+  {
+    title: 'Carwash',
+    url: '/admin/carwash',
+    icon: Car,
+  },
   // {
   //   title: "Calendar",
   //   url: "#",

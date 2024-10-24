@@ -1,4 +1,4 @@
-import { AuthService } from '@/services/auth.service';
+import { UserService } from '@/services/user.service';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import type { NextAuthConfig } from 'next-auth';
 import {
@@ -27,8 +27,8 @@ export const authConfig = {
   },
   callbacks: {
     async session({ session }) {
-      const authService = new AuthService();
-      const dbUser = await authService.getUserFromDb(session.user.email);
+      const userService = new UserService();
+      const dbUser = await userService.getUserFromDb(session.user.email);
 
       if (dbUser) {
         session.user.id = dbUser.id;

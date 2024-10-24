@@ -1,4 +1,5 @@
 import { LogoutButton } from "@/components/logout-button";
+import { Button } from "@/components/ui/button";
 import {
 	Sidebar,
 	SidebarContent,
@@ -68,6 +69,9 @@ export const AdminSidebar = () => {
 				</SidebarGroup>
 			</SidebarContent>
 			<SidebarFooter>
+				<Button asChild>
+					<Link href="/dashboard">Dashboard</Link>
+				</Button>
 				<LogoutButton />
 				<div className="text-center text-sm text-gray-500">
 					© {new Date().getFullYear()} All rights reserved

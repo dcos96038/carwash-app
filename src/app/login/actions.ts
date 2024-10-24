@@ -20,7 +20,7 @@ export const login = actionClient
         redirect: false,
       });
     } catch (error) {
-      throw new Error('Invalid email or password');
+      throw new Error('Invalid email or password', { cause: error });
     }
 
     redirect('/dashboard');

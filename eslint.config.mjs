@@ -7,7 +7,17 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import reactHooks from 'eslint-plugin-react-hooks';
 
 export default tseslint.config(
-  { ignores: ['dist'] },
+  {
+    ignores: [
+      '.next',
+      'db-data',
+      'public',
+      'node_modules',
+      'db/migrations',
+      '.vscode',
+      '.github',
+    ],
+  },
   {
     extends: [pluginJs.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],

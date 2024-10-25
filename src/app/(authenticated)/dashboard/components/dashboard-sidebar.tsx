@@ -13,9 +13,9 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { LayoutDashboard } from 'lucide-react';
-import Link from 'next/link';
 import { UserRolesEnum } from '@/types/user.types';
+import { CarFront, LayoutDashboard, PencilIcon } from 'lucide-react';
+import Link from 'next/link';
 
 const items = [
   {
@@ -23,16 +23,16 @@ const items = [
     url: '/dashboard',
     icon: LayoutDashboard,
   },
-  // {
-  //   title: "Inbox",
-  //   url: "#",
-  //   icon: Inbox,
-  // },
-  // {
-  //   title: "Calendar",
-  //   url: "#",
-  //   icon: Calendar,
-  // },
+  {
+    title: "Servicios",
+    url: "/dashboard/services",
+    icon: CarFront,
+  },
+  {
+    title: "Turnos",
+    url: "/dashboard/appointments",
+    icon: PencilIcon,
+  },
   // {
   //   title: "Search",
   //   url: "#",

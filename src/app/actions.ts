@@ -1,7 +1,7 @@
 'use server';
 
 import z from 'zod';
-import { LocationsService } from '@/services/locations.service';
+import { CarwashService } from '@/services/carwash.service';
 import { actionClient } from '@/lib/safe-action-clients';
 
 const getLocationsSchema = z.object({
@@ -18,8 +18,8 @@ const getLocationsSchema = z.object({
 export const getLocationsAction = actionClient
   .schema(getLocationsSchema)
   .action(async ({ parsedInput }) => {
-    const locationsService = new LocationsService();
-    const result = await locationsService.getMarkers(parsedInput.coords);
+    const carwashService = new CarwashService();
+    const result = await carwashService.getByCoords(parsedInput.coords);
 
     return result;
   });
@@ -31,8 +31,8 @@ const searchLocationsSchema = z.object({
 export const searchLocations = actionClient
   .schema(searchLocationsSchema)
   .action(async ({ parsedInput }) => {
-    const locationsService = new LocationsService();
-    const result = await locationsService.searchLocations(parsedInput.query);
+    const carwashService = new CarwashService();
+    const result = await carwashService.getByName(parsedInput.query);
 
     return result;
   });

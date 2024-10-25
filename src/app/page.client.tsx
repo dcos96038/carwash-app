@@ -1,7 +1,7 @@
 'use client';
 
 import { useMap } from '@/context/use-map';
-import type { Carwash } from '@/types/locations.types';
+import type { Carwash } from '@/types/carwash.types';
 import { icon } from 'leaflet';
 import { useEffect, useState } from 'react';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';

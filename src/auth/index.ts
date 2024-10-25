@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
-import { AuthService } from '@/services/auth.service';
+import { UserService } from '@/services/user.service';
 import { authConfig } from './auth-config';
 
 export const BASE_PATH = '/api/auth';
@@ -13,7 +13,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       name: 'Credentials',
       type: 'credentials',
       async authorize(credentials) {
-        const authService = new AuthService();
+        const userService = new UserService();
 
         const email = credentials.email as string;
         const password = credentials.password as string;
@@ -22,14 +22,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null;
         }
 
-        const user = await authService.getUserFromDb(email);
+        const user = await userService.getUserFromDb(email);
 
         if (user) {
           if (!user.password) {
             return null;
           }
 
-          const isAuthenticated = await authService.passwordMatch(
+          const isAuthenticated = await userService.passwordMatch(
             password,
             user.password
           );

@@ -1,6 +1,6 @@
 'use client';
 
-import type { Carwash } from '@/types/locations.types';
+import type { Carwash } from '@/types/carwash.types';
 import { CarFront, LogOutIcon } from 'lucide-react';
 import { LocationButton } from './location-button';
 import { signOut, useSession } from 'next-auth/react';

@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useMap } from '@/context/use-map';
 import { cn, isClosed } from '@/lib/utils';
-import type { Carwash } from '@/types/locations.types';
+import type { Carwash } from '@/types/carwash.types';
 
 interface LocationButtonProps {
   location: Carwash;

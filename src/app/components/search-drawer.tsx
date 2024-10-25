@@ -13,7 +13,7 @@ import { Search } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { useDebounceCallback } from 'usehooks-ts';
 import { searchLocations } from '../actions';
-import type { Carwash } from '@/types/locations.types';
+import type { Carwash } from '@/types/carwash.types';
 import { LocationButton } from './location-button';
 import { useAction } from 'next-safe-action/hooks';
 

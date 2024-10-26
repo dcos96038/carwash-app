@@ -1,7 +1,12 @@
-import { ClientHomePage } from './page.client';
 import { getLocationsAction } from './actions';
 
 import { searchParamsCache } from '@/lib/search-params';
+
+import dynamic from 'next/dynamic';
+
+const ClientHomePage = dynamic(() => import('./page.client'), {
+  ssr: false,
+});
 
 export default async function Home({
   searchParams,

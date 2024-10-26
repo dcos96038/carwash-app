@@ -16,6 +16,9 @@ const getLocationsSchema = z.object({
 });
 
 export const getLocationsAction = actionClient
+  .metadata({
+    actionName: 'getLocations',
+  })
   .schema(getLocationsSchema)
   .action(async ({ parsedInput }) => {
     const carwashService = new CarwashService();
@@ -29,6 +32,9 @@ const searchLocationsSchema = z.object({
 });
 
 export const searchLocations = actionClient
+  .metadata({
+    actionName: 'searchLocations',
+  })
   .schema(searchLocationsSchema)
   .action(async ({ parsedInput }) => {
     const carwashService = new CarwashService();

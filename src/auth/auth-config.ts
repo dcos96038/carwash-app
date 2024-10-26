@@ -1,46 +1,11 @@
-import { UserService } from '@/services/user.service';
-import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import type { NextAuthConfig } from 'next-auth';
-import {
-  users,
-  accounts,
-  sessions,
-  verificationTokens,
-} from '../../db/schema/user';
-import { db } from '../../db';
+import GoogleProvider from 'next-auth/providers/google';
 
 export const authConfig = {
-  basePath: '/api/auth',
-  adapter: DrizzleAdapter(db, {
-    usersTable: users,
-    accountsTable: accounts,
-    sessionsTable: sessions,
-    verificationTokensTable: verificationTokens,
-  }),
-  session: {
-    strategy: 'jwt',
-  },
-  pages: {
-    error: '/',
-    signIn: '/',
-    signOut: '/',
-  },
-  callbacks: {
-    async session({ session }) {
-      const userService = new UserService();
-      const dbUser = await userService.getUserFromDb(session.user.email);
-
-      if (dbUser) {
-        session.user.id = dbUser.id;
-        session.user.name = dbUser.name || '';
-        session.user.email = dbUser.email || '';
-        session.user.image = dbUser.image || '';
-        session.user.role = dbUser.role;
-      }
-
-      return session;
-    },
-  },
-  secret: process.env.AUTH_SECRET,
-  providers: [],
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    }),
+  ],
 } satisfies NextAuthConfig;

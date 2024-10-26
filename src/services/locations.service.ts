@@ -33,4 +33,10 @@ export class LocationsService {
         ilike(locations.name, `%${searchQuery}%`),
     });
   }
+  
+  async getCarwashLength() : Promise<number> {
+    const carwash = await this.db.query.carwash.findMany();
+    return carwash.length;
+  }
+  
 }

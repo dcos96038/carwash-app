@@ -10,6 +10,9 @@ import {
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 import { defaultColumns } from "../lib";
+import crypto from "crypto";
+import { InferSelectModel } from "drizzle-orm";
+
 
 export const roles = pgEnum("role", ["USER", "ADMIN"]);
 
@@ -100,3 +103,6 @@ export const customer = pgTable("customer", {
 		.references(() => users.id, { onDelete: "cascade" }),
 	contactNumber: text("contact_number"),
 });
+
+
+export type User = InferSelectModel<typeof users>;

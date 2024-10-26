@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../../db';
 import bcrypt from 'bcryptjs';
-import { users } from '../../db/schema/user';
+import { User, users } from '../../db/schema/user';
 
 export class AuthService {
   private readonly db = db;
@@ -12,14 +12,19 @@ export class AuthService {
     return hash;
   }
 
-  async getUserFromDb(email: string) {
+  async getUserFromDb(email: string) : Promise< User | undefined> {
     const user = await this.db.query.users.findFirst({
       where: eq(users.email, email),
     });
     return user;
   }
 
-  async addUserToDb(email: string, password: string) {
+  async getUserLength() : Promise<number> {
+    const user = await this.db.query.users.findMany();
+    return user.length;
+  }
+
+  async addUserToDb(email: string, password: string) : Promise< User | undefined> {
     const saltedPassword = this.passwordToSalt(password);
 
     const user = await this.db

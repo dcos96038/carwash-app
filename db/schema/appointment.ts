@@ -3,6 +3,7 @@ import { pgEnum, pgTable, timestamp, uuid } from "drizzle-orm/pg-core";
 import { defaultColumns } from "../lib";
 import { carwash } from "./carwash";
 import { customer } from "./user";
+import { InferSelectModel } from "drizzle-orm";
 
 export const appointmentStatus = pgEnum("appointment_status", [
 	"pending",
@@ -24,3 +25,5 @@ export const appointment = pgTable("appointment", {
 		.notNull()
 		.references(() => customer.id, { onDelete: "cascade" }),
 });
+
+export type Appointment = InferSelectModel<typeof appointment>;

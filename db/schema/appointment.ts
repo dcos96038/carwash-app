@@ -1,9 +1,9 @@
 import { pgEnum, pgTable, timestamp, uuid } from 'drizzle-orm/pg-core';
 
-import { defaultColumns } from "../lib";
-import { carwash } from "./carwash";
-import { customer } from "./user";
-import { InferSelectModel } from "drizzle-orm";
+import { defaultColumns } from '../lib';
+import { carwash } from './carwash';
+import { customer } from './user';
+import { InferSelectModel } from 'drizzle-orm';
 
 export const appointmentStatus = pgEnum('appointment_status', [
   'pending',

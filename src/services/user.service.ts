@@ -12,19 +12,22 @@ export class UserService {
     return hash;
   }
 
-  async getUserFromDb(email: string) : Promise< User | undefined> {
+  async getUserFromDb(email: string): Promise<User | undefined> {
     const user = await this.db.query.users.findFirst({
       where: eq(users.email, email),
     });
     return user;
   }
 
-  async getUserLength() : Promise<number> {
+  async getUserLength(): Promise<number> {
     const user = await this.db.query.users.findMany();
     return user.length;
   }
 
-  async addUserToDb(email: string, password: string) : Promise< User | undefined> {
+  async addUserToDb(
+    email: string,
+    password: string
+  ): Promise<User | undefined> {
     const saltedPassword = this.passwordToSalt(password);
 
     const user = await this.db

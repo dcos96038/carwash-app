@@ -24,13 +24,13 @@ const items = [
     icon: LayoutDashboard,
   },
   {
-    title: "Servicios",
-    url: "/dashboard/services",
+    title: 'Servicios',
+    url: '/dashboard/services',
     icon: CarFront,
   },
   {
-    title: "Turnos",
-    url: "/dashboard/appointments",
+    title: 'Turnos',
+    url: '/dashboard/appointments',
     icon: PencilIcon,
   },
   // {

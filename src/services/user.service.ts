@@ -3,7 +3,7 @@ import { db } from '../../db';
 import bcrypt from 'bcryptjs';
 import { User, users } from '../../db/schema/user';
 
-export class AuthService {
+export class UserService {
   private readonly db = db;
 
   private passwordToSalt(password: string) {
@@ -59,5 +59,21 @@ export class AuthService {
 
   async passwordMatch(password: string, hashedPassword: string) {
     return bcrypt.compareSync(password, hashedPassword);
+  }
+
+  async getUsers() {
+    const result = await this.db.query.users.findMany();
+
+    if (!result) {
+      throw new Error('Failed to get users');
+    }
+
+    return result.map((u) => ({
+      id: u.id,
+      email: u.email,
+      name: u.name,
+      role: u.role,
+      image: u.image,
+    }));
   }
 }

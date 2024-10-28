@@ -1,50 +1,88 @@
 import NextAuth from 'next-auth';
-import Credentials from 'next-auth/providers/credentials';
-import GoogleProvider from 'next-auth/providers/google';
-import { AuthService } from '@/services/auth.service';
 import { authConfig } from './auth-config';
+import { db } from '../../db';
+import { DrizzleAdapter } from '@auth/drizzle-adapter';
+import {
+  users,
+  accounts,
+  sessions,
+  verificationTokens,
+} from '../../db/schema/user';
+import { UserService } from '@/services/user.service';
 
 export const BASE_PATH = '/api/auth';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
-  providers: [
-    Credentials({
-      name: 'Credentials',
-      type: 'credentials',
-      async authorize(credentials) {
-        const authService = new AuthService();
+  adapter: DrizzleAdapter(db, {
+    usersTable: users,
+    accountsTable: accounts,
+    sessionsTable: sessions,
+    verificationTokensTable: verificationTokens,
+  }),
+  basePath: '/api/auth',
+  session: {
+    strategy: 'jwt',
+  },
+  pages: {
+    error: '/',
+    signIn: '/',
+    signOut: '/',
+  },
+  callbacks: {
+    async session({ session }) {
+      const userService = new UserService();
+      const dbUser = await userService.getByEmail(session.user.email);
 
-        const email = credentials.email as string;
-        const password = credentials.password as string;
+      if (dbUser) {
+        session.user.id = dbUser.id;
+        session.user.name = dbUser.name || '';
+        session.user.email = dbUser.email || '';
+        session.user.image = dbUser.image || '';
+        session.user.role = dbUser.role;
+      }
 
-        if (!email || !password) {
-          return null;
-        }
+      return session;
+    },
+  },
+  secret: process.env.AUTH_SECRET,
+  // providers: [
+  //   // Credentials({
+  //   //   name: 'Credentials',
+  //   //   type: 'credentials',
+  //   //   async authorize(credentials) {
+  //   //     const userService = new UserService();
 
-        const user = await authService.getUserFromDb(email);
+  //   //     const email = credentials.email as string;
+  //   //     const password = credentials.password as string;
 
-        if (user) {
-          if (!user.password) {
-            return null;
-          }
+  //   //     if (!email || !password) {
+  //   //       return null;
+  //   //     }
 
-          const isAuthenticated = await authService.passwordMatch(
-            password,
-            user.password
-          );
+  //   //     const user = await userService.getByEmail(email);
 
-          if (isAuthenticated) {
-            return user;
-          }
-        }
+  //   //     if (user) {
+  //   //       if (!user.password) {
+  //   //         return null;
+  //   //       }
 
-        return null;
-      },
-    }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    }),
-  ],
+  //   //       const isAuthenticated = await userService.passwordMatch(
+  //   //         password,
+  //   //         user.password
+  //   //       );
+
+  //   //       if (isAuthenticated) {
+  //   //         return user;
+  //   //       }
+  //   //     }
+
+  //   //     return null;
+  //   //   },
+  //   // }),
+  //   GoogleProvider({
+  //     clientId: process.env.GOOGLE_CLIENT_ID as string,
+  //     clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+  //   }),
+  // ],
 });

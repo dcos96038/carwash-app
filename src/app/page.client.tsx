@@ -1,7 +1,7 @@
 'use client';
 
 import { useMap } from '@/context/use-map';
-import type { Carwash } from '@/types/locations.types';
+import type { Carwash } from '@/types/carwash.types';
 import { icon } from 'leaflet';
 import { useEffect, useState } from 'react';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
@@ -18,7 +18,11 @@ const locationMarker = icon({
   popupAnchor: [2, -40],
 });
 
-export function ClientHomePage({ locations }: { locations: Carwash[] }) {
+export default function ClientHomePage({
+  locations,
+}: {
+  locations: Carwash[];
+}) {
   const [carwashLocations, setCarwashLocations] =
     useState<Carwash[]>(locations);
   const [userLocation, setUserLocation] = useState<GeolocationPosition | null>(
@@ -41,12 +45,12 @@ export function ClientHomePage({ locations }: { locations: Carwash[] }) {
   });
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position: GeolocationPosition) => {
+    if (typeof window !== 'undefined' && window.navigator.geolocation) {
+      window.navigator.geolocation.getCurrentPosition(
+        (position) => {
           setUserLocation(position);
         },
-        (error: GeolocationPositionError) => {
+        (error) => {
           console.log(`Error getting location: ${error.message}`);
           setUserLocationError(error.message);
         },

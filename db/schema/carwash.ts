@@ -10,10 +10,10 @@ import { defaultColumns } from "../lib";
 import { users } from "./user";
 import { InferSelectModel } from "drizzle-orm";
 
-export const carwashStatus = pgEnum("carwash_status", [
-	"open",
-	"closed",
-	"full",
+export const carwashStatus = pgEnum('carwash_status', [
+  'open',
+  'closed',
+  'full',
 ]);
 
 export const carwash = pgTable("carwash", {

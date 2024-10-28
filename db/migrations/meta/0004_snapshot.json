@@ -1,6 +1,6 @@
 {
-  "id": "71a4cac0-286f-4b1b-8fd3-48803a35a857",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "f97c61df-df39-47d1-84d8-597bc7679f19",
+  "prevId": "576c77bf-ec1a-428b-b9db-0df84b2693b7",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -19,13 +19,14 @@
           "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": "now()"
         },
         "updatedAt": {
           "name": "updatedAt",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "carwash_id": {
           "name": "carwash_id",
@@ -104,13 +105,14 @@
           "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": "now()"
         },
         "updatedAt": {
           "name": "updatedAt",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "owner_id": {
           "name": "owner_id",
@@ -152,13 +154,13 @@
           "name": "opening_hours",
           "type": "time",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "closing_hours": {
           "name": "closing_hours",
           "type": "time",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "email": {
           "name": "email",
@@ -211,13 +213,14 @@
           "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": "now()"
         },
         "updatedAt": {
           "name": "updatedAt",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "name": {
           "name": "name",
@@ -289,13 +292,14 @@
           "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": "now()"
         },
         "updatedAt": {
           "name": "updatedAt",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "service_id": {
           "name": "service_id",
@@ -525,13 +529,14 @@
           "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": "now()"
         },
         "updatedAt": {
           "name": "updatedAt",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "user_id": {
           "name": "user_id",
@@ -638,6 +643,14 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "role": {
+          "name": "role",
+          "type": "role",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'USER'"
         }
       },
       "indexes": {},
@@ -705,6 +718,11 @@
       "name": "vehicle_type",
       "schema": "public",
       "values": ["car", "suv", "motorcycle"]
+    },
+    "public.role": {
+      "name": "role",
+      "schema": "public",
+      "values": ["USER", "ADMIN"]
     }
   },
   "schemas": {},

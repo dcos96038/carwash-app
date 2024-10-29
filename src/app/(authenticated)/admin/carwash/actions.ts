@@ -3,7 +3,7 @@
 import { authActionClient } from '@/lib/safe-action-clients';
 import { CarwashService } from '@/services/carwash.service';
 import { UserService } from '@/services/user.service';
-import { createCarwashSchema } from './schemas';
+import { createCarwashSchema, getCarwashesInputSchema } from './schemas';
 
 export const createCarwash = authActionClient
   .metadata({
@@ -33,4 +33,21 @@ export const getUsersForCombobox = authActionClient
         value: u.id,
       };
     });
+  });
+
+export const getCarwashes = authActionClient
+  .metadata({
+    actionName: 'getCarwashes',
+  })
+  .schema(getCarwashesInputSchema)
+  .action(async ({ parsedInput }) => {
+    const carwashService = new CarwashService();
+    const totalCount = await carwashService.getTotalCount();
+
+    const results = await carwashService.getMany(parsedInput);
+
+    return {
+      results,
+      totalCount,
+    };
   });

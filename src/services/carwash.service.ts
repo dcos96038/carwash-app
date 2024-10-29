@@ -1,7 +1,8 @@
 import type { Carwash } from '@/types/carwash.types';
 import { db } from '../../db';
 import { carwash } from '../../db/schema/carwash';
-import { CreateCarwash } from '@/app/(authenticated)/admin/carwash/actions';
+import { CreateCarwash } from '@/app/(authenticated)/admin/carwash/schemas';
+import { CommonOptions } from '@/types/common.types';
 
 export class CarwashService {
   private readonly db = db;
@@ -34,6 +35,36 @@ export class CarwashService {
       where: (locations, { ilike }) =>
         ilike(locations.name, `%${searchQuery}%`),
     });
+  }
+
+  async getMany(options: CommonOptions<Carwash>): Promise<Carwash[]> {
+    const { page, limit, sortBy, filter } = options;
+
+    const results = await this.db.query.carwash.findMany({
+      limit,
+      offset: page * limit,
+      ...(sortBy && {
+        orderBy: (carwash, { asc, desc }) =>
+          Object.entries(sortBy).map(([key, value]) => {
+            const columnKey = key as keyof Carwash;
+            return value === 'asc'
+              ? asc(carwash[columnKey])
+              : desc(carwash[columnKey]);
+          }),
+      }),
+      ...(filter && {
+        where: (carwash, { ilike }) => {
+          const columnKey = filter.key as keyof Carwash;
+          return ilike(carwash[columnKey], `%${filter.value}%`);
+        },
+      }),
+    });
+
+    return results;
+  }
+
+  async getTotalCount(): Promise<number> {
+    return await this.db.$count(carwash);
   }
 
   async insertCarwash(input: CreateCarwash): Promise<Carwash> {

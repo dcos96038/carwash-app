@@ -17,3 +17,13 @@ export function isClosed(closingHours: string | null): boolean {
 
   return currentTime > closingTime;
 }
+
+export function createEnum<T extends string>(arr: T[]): { [K in T]: K } {
+  return arr.reduce(
+    (acc, curr) => {
+      acc[curr] = curr;
+      return acc;
+    },
+    {} as { [K in T]: K }
+  );
+}

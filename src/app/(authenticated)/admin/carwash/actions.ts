@@ -4,6 +4,7 @@ import { authActionClient } from '@/lib/safe-action-clients';
 import { CarwashService } from '@/services/carwash.service';
 import { UserService } from '@/services/user.service';
 import { createCarwashSchema, getCarwashesInputSchema } from './schemas';
+import { redirect } from 'next/navigation';
 
 export const createCarwash = authActionClient
   .metadata({
@@ -13,9 +14,9 @@ export const createCarwash = authActionClient
   .action(async ({ parsedInput }) => {
     const carwashService = new CarwashService();
 
-    const result = await carwashService.insertCarwash(parsedInput);
+    await carwashService.insertCarwash(parsedInput);
 
-    return result;
+    redirect('/admin/carwash');
   });
 
 export const getUsersForCombobox = authActionClient

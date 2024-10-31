@@ -10,11 +10,13 @@ export default async function Page({
 }: {
   searchParams: Record<string, string | string[] | undefined>;
 }) {
-  const { pagination } = searchParamsCache.parse(searchParams);
+  const { page, perPage, sorting } = searchParamsCache.parse(searchParams);
+
   const users = await getUsersForCombobox();
   const carwashes = await getCarwashes({
-    limit: pagination.pageSize,
-    page: pagination.pageIndex,
+    page,
+    limit: perPage,
+    sortBy: sorting,
   });
 
   return (

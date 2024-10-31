@@ -1,21 +1,9 @@
-import { paginationParser } from '@/lib/search-params';
-import { PaginationState } from '@tanstack/react-table';
-import { useQueryState } from 'nuqs';
-import { useDebounceCallback } from 'usehooks-ts';
+import { paginationParsers, paginationUrlKeys } from '@/lib/search-params';
+import { useQueryStates } from 'nuqs';
 
 export const usePaginationQuery = () => {
-  const [pagination, setPagination] = useQueryState<PaginationState>(
-    'pagination',
-    {
-      ...paginationParser,
-      shallow: false,
-    }
-  );
-
-  const debouncedSetPagination = useDebounceCallback(setPagination, 0);
-
-  return {
-    pagination,
-    setPagination: debouncedSetPagination,
-  };
+  return useQueryStates(paginationParsers, {
+    urlKeys: paginationUrlKeys,
+    shallow: false,
+  });
 };

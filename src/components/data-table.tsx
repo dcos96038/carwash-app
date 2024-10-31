@@ -18,6 +18,8 @@ import {
 } from '@/components/ui/table';
 import { usePaginationQuery } from '@/hooks/use-pagination-query';
 import { Button } from './ui/button';
+import { useSortingQuery } from '@/hooks/use-sorting-query';
+import { ArrowUpDown, SortAsc, SortDesc } from 'lucide-react';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -30,17 +32,21 @@ export function DataTable<TData, TValue>({
   data,
   totalItems,
 }: DataTableProps<TData, TValue>) {
-  const { setPagination, pagination } = usePaginationQuery();
+  const [pagination, setPagination] = usePaginationQuery();
+  const { setSorting, sorting } = useSortingQuery();
 
   const table = useReactTable({
     data,
     columns,
     manualPagination: true,
+    manualSorting: true,
     getCoreRowModel: getCoreRowModel(),
     pageCount: Math.ceil(totalItems / pagination.pageSize),
     onPaginationChange: setPagination,
+    onSortingChange: setSorting,
     state: {
       pagination,
+      sorting,
     },
   });
 
@@ -53,12 +59,30 @@ export function DataTable<TData, TValue>({
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                    <div className="flex items-center gap-1">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                      {header.column.getCanSort() && (
+                        <Button
+                          className="size-5"
+                          onClick={() => header.column.toggleSorting()}
+                          size={'icon'}
+                          variant={'outline'}
+                        >
+                          {header.column.getIsSorted() === 'asc' ? (
+                            <SortAsc />
+                          ) : header.column.getIsSorted() === 'desc' ? (
+                            <SortDesc />
+                          ) : (
+                            <ArrowUpDown />
+                          )}
+                        </Button>
+                      )}
+                    </div>
                   </TableHead>
                 );
               })}

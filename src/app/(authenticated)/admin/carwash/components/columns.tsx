@@ -11,6 +11,7 @@ export const carwashColumns: ColumnDef<Carwash>[] = [
   {
     accessorKey: 'coords',
     header: 'Coords',
+    enableSorting: false,
     cell: ({ row }) => (
       <span>
         {row.original.latitude}, {row.original.longitude}

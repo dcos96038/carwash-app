@@ -1,7 +1,8 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../../db';
 import bcrypt from 'bcryptjs';
-import { User, users } from '../../db/schema/user';
+import { User } from '@/types/user.types';
+import { users } from '../../db/schema/user';
 
 export class UserService {
   private readonly db = db;
@@ -12,7 +13,7 @@ export class UserService {
     return hash;
   }
 
-  async getUserFromDb(email: string): Promise<User | undefined> {
+  async getUserFromDb(email: string) {
     const user = await this.db.query.users.findFirst({
       where: eq(users.email, email),
     });
@@ -40,29 +41,29 @@ export class UserService {
     return user.pop();
   }
 
-  async login({ username, password }: { username: string; password: string }) {
-    const user = await this.getUserFromDb(username);
+  // async login({ username, password }: { username: string; password: string }) {
+  //   const user = await this.getUserFromDb(username);
 
-    if (!user) {
-      return null;
-    }
+  //   if (!user) {
+  //     return null;
+  //   }
 
-    if (!user.password) {
-      return null;
-    }
+  //   if (!user.password) {
+  //     return null;
+  //   }
 
-    const isAuthenticated = await this.passwordMatch(password, user.password);
+  //   const isAuthenticated = await this.passwordMatch(password, user.password);
 
-    if (!isAuthenticated) {
-      return null;
-    }
+  //   if (!isAuthenticated) {
+  //     return null;
+  //   }
 
-    return user;
-  }
+  //   return user;
+  // }
 
-  async passwordMatch(password: string, hashedPassword: string) {
-    return bcrypt.compareSync(password, hashedPassword);
-  }
+  // async passwordMatch(password: string, hashedPassword: string) {
+  //   return bcrypt.compareSync(password, hashedPassword);
+  // }
 
   async getUsers() {
     const result = await this.db.query.users.findMany();

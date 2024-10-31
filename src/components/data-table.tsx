@@ -11,24 +11,37 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { usePaginationQuery } from '@/hooks/use-pagination-query';
+import { Button } from './ui/button';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  totalItems: number;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  totalItems,
 }: DataTableProps<TData, TValue>) {
+  const { setPagination, pagination } = usePaginationQuery();
+
   const table = useReactTable({
     data,
     columns,
+    manualPagination: true,
     getCoreRowModel: getCoreRowModel(),
+    pageCount: Math.ceil(totalItems / pagination.pageSize),
+    onPaginationChange: setPagination,
+    state: {
+      pagination,
+    },
   });
 
   return (
@@ -74,6 +87,33 @@ export function DataTable<TData, TValue>({
             </TableRow>
           )}
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell colSpan={columns.length}>
+              <div className="flex items-center justify-end space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => table.previousPage()}
+                  disabled={!table.getCanPreviousPage()}
+                >
+                  Previous
+                </Button>
+                <span>
+                  Page {pagination.pageIndex + 1} of {table.getPageCount()}
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => table.nextPage()}
+                  disabled={!table.getCanNextPage()}
+                >
+                  Next
+                </Button>
+              </div>
+            </TableCell>
+          </TableRow>
+        </TableFooter>
       </Table>
     </div>
   );

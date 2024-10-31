@@ -1,60 +1,46 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../../db';
-import bcrypt from 'bcryptjs';
 import { users } from '../../db/schema/user';
 
 export class UserService {
   private readonly db = db;
 
-  private passwordToSalt(password: string) {
-    const saltRounds = 10;
-    const hash = bcrypt.hashSync(password, saltRounds);
-    return hash;
-  }
+  // private passwordToSalt(password: string) {
+  //   const saltRounds = 10;
+  //   const hash = bcrypt.hashSync(password, saltRounds);
+  //   return hash;
+  // }
 
-  async getUserFromDb(email: string) {
+  async getByEmail(email: string) {
     const user = await this.db.query.users.findFirst({
       where: eq(users.email, email),
     });
     return user;
   }
 
-  async addUserToDb(email: string, password: string) {
-    const saltedPassword = this.passwordToSalt(password);
+  // async login({ username, password }: { username: string; password: string }) {
+  //   const user = await this.getByEmail(username);
 
-    const user = await this.db
-      .insert(users)
-      .values({
-        email: email,
-        password: saltedPassword,
-      })
-      .returning();
-    return user.pop();
-  }
+  //   if (!user) {
+  //     return null;
+  //   }
 
-  async login({ username, password }: { username: string; password: string }) {
-    const user = await this.getUserFromDb(username);
+  //   if (!user.password) {
+  //     return null;
+  //   }
 
-    if (!user) {
-      return null;
-    }
+  //   const isAuthenticated = await this.passwordMatch(password, user.password);
 
-    if (!user.password) {
-      return null;
-    }
+  //   if (!isAuthenticated) {
+  //     return null;
+  //   }
 
-    const isAuthenticated = await this.passwordMatch(password, user.password);
+  //   return user;
+  // }
 
-    if (!isAuthenticated) {
-      return null;
-    }
-
-    return user;
-  }
-
-  async passwordMatch(password: string, hashedPassword: string) {
-    return bcrypt.compareSync(password, hashedPassword);
-  }
+  // async passwordMatch(password: string, hashedPassword: string) {
+  //   return bcrypt.compareSync(password, hashedPassword);
+  // }
 
   async getUsers() {
     const result = await this.db.query.users.findMany();

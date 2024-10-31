@@ -41,10 +41,13 @@ export const CreateCarwashDialog: React.FC<CreateCarwashDialogProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { execute } = useAction(createCarwash, {
+  const { execute, isExecuting } = useAction(createCarwash, {
     onSuccess: () => {
       toast.success('Carwash created successfully');
       setIsOpen(false);
+    },
+    onError: (e) => {
+      toast.error(e.error.serverError);
     },
   });
 
@@ -242,7 +245,9 @@ export const CreateCarwashDialog: React.FC<CreateCarwashDialogProps> = ({
               )}
             />
           </div>
-          <Button onClick={onSubmit}>Create Carwash</Button>
+          <Button disabled={isExecuting} onClick={onSubmit}>
+            Create Carwash
+          </Button>
         </Form>
       </DialogContent>
     </Dialog>

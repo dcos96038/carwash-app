@@ -1,7 +1,7 @@
 import type { Carwash } from '@/types/carwash.types';
 import { db } from '../../db';
 import { carwash } from '../../db/schema/carwash';
-import { CreateCarwash } from '@/app/(authenticated)/admin/carwash/actions';
+import { CreateCarwash } from '@/app/(authenticated)/admin/carwash/schemas';
 
 export class CarwashService {
   private readonly db = db;
@@ -46,5 +46,10 @@ export class CarwashService {
     }
 
     return insertedCarwash;
+  }
+
+  async getCarwashLength(): Promise<number> {
+    const carwash = await this.db.query.carwash.findMany();
+    return carwash.length;
   }
 }

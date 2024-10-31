@@ -32,7 +32,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async session({ session }) {
       const userService = new UserService();
-      const dbUser = await userService.getByEmail(session.user.email);
+      const dbUser = await userService.getUserFromDb(session.user.email);
 
       if (dbUser) {
         session.user.id = dbUser.id;
@@ -46,43 +46,4 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
   secret: process.env.AUTH_SECRET,
-  // providers: [
-  //   // Credentials({
-  //   //   name: 'Credentials',
-  //   //   type: 'credentials',
-  //   //   async authorize(credentials) {
-  //   //     const userService = new UserService();
-
-  //   //     const email = credentials.email as string;
-  //   //     const password = credentials.password as string;
-
-  //   //     if (!email || !password) {
-  //   //       return null;
-  //   //     }
-
-  //   //     const user = await userService.getByEmail(email);
-
-  //   //     if (user) {
-  //   //       if (!user.password) {
-  //   //         return null;
-  //   //       }
-
-  //   //       const isAuthenticated = await userService.passwordMatch(
-  //   //         password,
-  //   //         user.password
-  //   //       );
-
-  //   //       if (isAuthenticated) {
-  //   //         return user;
-  //   //       }
-  //   //     }
-
-  //   //     return null;
-  //   //   },
-  //   // }),
-  //   GoogleProvider({
-  //     clientId: process.env.GOOGLE_CLIENT_ID as string,
-  //     clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-  //   }),
-  // ],
 });

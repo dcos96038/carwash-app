@@ -15,7 +15,7 @@ import { Edit, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { Appointment } from '../../../../../db/schema/appointment';
 
-export default function BackofficeInterface() {
+export default function Page() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [licensePlate, setLicensePlate] = useState('');
   const [scheduletAt, setScheduletAt] = useState('');

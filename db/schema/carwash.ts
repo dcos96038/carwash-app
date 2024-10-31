@@ -33,5 +33,3 @@ export const carwash = pgTable('carwash', {
   logo: text('logo').default(''),
   status: carwashStatus('status').notNull().default('open'),
 });
-
-export type Carwash = InferSelectModel<typeof carwash>;

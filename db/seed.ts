@@ -1,12 +1,13 @@
+import { UserService } from '@/services/user.service';
 import { db } from '.';
+import { CarwashService } from '@/services/carwash.service';
+import { Carwash } from '@/types/carwash.types';
+import { User } from '@/types/user.types';
 import { carwash } from './schema/carwash';
-import { AuthService } from '../src/services/auth.service';
-import { User } from './schema/user';
-import { LocationsService } from '@/services/locations.service';
 
 async function main() {
-  const authService = new AuthService();
-  const locationService = new LocationsService();
+  const authService = new UserService();
+  const locationService = new CarwashService();
 
   const emails = ['user@gmail.com', 'user2@gmail.com'];
 
@@ -19,7 +20,7 @@ async function main() {
   }
 
   if ((await locationService.getCarwashLength()) === 0) {
-    const seedData: Omit<typeof carwash.$inferSelect, 'id'>[] = [
+    const seedData: Omit<Carwash, 'id'>[] = [
       {
         name: 'Car Wash Lules Centro',
         owner_id: users[0].id,
@@ -92,7 +93,7 @@ async function main() {
 
 async function createUsers(
   emails: string[],
-  authService: AuthService,
+  authService: UserService,
   password: string,
   users: {
     id: string;

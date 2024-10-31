@@ -19,83 +19,50 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { Service, VehicleTypeEnum } from '@/types/services.types';
 import { Check, Pencil, Plus, Trash2, X } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import { toast } from 'sonner';
 
-enum VehicleType {
-  Car = 'Automóvil',
-  Truck = 'Camioneta',
-  Motorcycle = 'Motocicleta',
-}
-
-const Services = {
-  Washing: 'Lavado',
-  Polishing: 'Pulido',
-  Waxing: 'Encerado',
-  InteriorCleaning: 'Limpieza Interior',
-  EngineWashing: 'Lavado de Motor',
-};
-
-type WashService = {
-  id: number;
-  vehicleType: VehicleType;
-  services: string[];
-  price: number;
-};
-
-export default function CarWashServices() {
-  const [washServices, setWashServices] = useState<WashService[]>([
-    {
-      id: 1,
-      vehicleType: VehicleType.Car,
-      services: [Services.Washing, Services.Polishing],
-      price: 30,
-    },
-    {
-      id: 2,
-      vehicleType: VehicleType.Truck,
-      services: [Services.Washing, Services.InteriorCleaning],
-      price: 45,
-    },
-  ]);
+export default function Page() {
+  const [services, setServices] = useState<Service[]>();
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [newWashService, setNewWashService] = useState<Partial<WashService>>({
+  const [newService, setNewService] = useState<Partial<Service>>({
     services: [],
   });
 
   const validateDuplicate = useCallback(
-    (serviceToValidate: Partial<WashService>) => {
-      return washServices.some(
+    (serviceToValidate: Partial<Service>) => {
+      return services.some(
         (service) =>
-          service.vehicleType === serviceToValidate.vehicleType &&
+          service.VehicleTypeEnum === serviceToValidate.VehicleTypeEnum &&
           JSON.stringify(service.services.sort()) ===
             JSON.stringify(serviceToValidate.services?.sort()) &&
           service.id !== editingId
       );
     },
-    [washServices, editingId]
+    [services, editingId]
   );
 
-  const addWashService = () => {
+  const addService = () => {
     if (
-      newWashService.vehicleType &&
-      newWashService.services &&
-      newWashService.services.length > 0 &&
-      newWashService.price
+      newService.VehicleTypeEnum &&
+      newService.services &&
+      newService.services.length > 0 &&
+      newService.price
     ) {
-      if (validateDuplicate(newWashService)) {
+      if (validateDuplicate(newService)) {
         toast('Error', {
           description: 'Ya existe un servicio con estas características',
           duration: 5000,
         });
         return;
       }
-      setWashServices([
-        ...washServices,
-        { id: Date.now(), ...(newWashService as WashService) },
+      setServices([
+        ...services,
+        { id: Date.now(), ...(newService as Service) },
       ]);
-      setNewWashService({ services: [] });
+      setNewService({ services: [] });
       toast('Éxito', {
         description: 'Servicio agregado correctamente',
         duration: 5000,
@@ -109,41 +76,39 @@ export default function CarWashServices() {
     }
   };
 
-  const startEditing = (service: WashService) => {
+  const startEditing = (service: Service) => {
     setEditingId(service.id);
-    setNewWashService(service);
+    setNewService(service);
   };
 
   const cancelEditing = () => {
     setEditingId(null);
-    setNewWashService({ services: [] });
+    setNewService({ services: [] });
   };
 
   const saveEdit = (id: number) => {
-    if (validateDuplicate(newWashService)) {
+    if (validateDuplicate(newService)) {
       toast('Error', {
         description: 'Ya existe un servicio con estas características',
         duration: 5000,
       });
       return;
     }
-    setWashServices(
-      washServices.map((service) =>
-        service.id === id
-          ? { ...service, ...(newWashService as WashService) }
-          : service
+    setServices(
+      services.map((service) =>
+        service.id === id ? { ...service, ...(newService as Service) } : service
       )
     );
     setEditingId(null);
-    setNewWashService({ services: [] });
+    setNewService({ services: [] });
     toast('Éxito', {
       description: 'Servicio actualizado correctamente',
       duration: 5000,
     });
   };
 
-  const deleteWashService = (id: number) => {
-    setWashServices(washServices.filter((service) => service.id !== id));
+  const deleteService = (id: number) => {
+    setServices(services.filter((service) => service.id !== id));
     toast('Éxito', {
       description: 'Servicio eliminado correctamente',
       duration: 5000,
@@ -151,7 +116,7 @@ export default function CarWashServices() {
   };
 
   const toggleService = (service: string) => {
-    setNewWashService((prev) => {
+    setNewService((prev) => {
       const services = prev.services || [];
       return {
         ...prev,
@@ -179,18 +144,18 @@ export default function CarWashServices() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {washServices.map((service) => (
+              {services.map((service) => (
                 <TableRow key={service.id}>
                   <TableCell>
                     {editingId === service.id ? (
                       <Select
                         value={
-                          newWashService.vehicleType || service.vehicleType
+                          newService.VehicleTypeEnum || service.VehicleTypeEnum
                         }
                         onValueChange={(value) =>
-                          setNewWashService({
-                            ...newWashService,
-                            vehicleType: value as VehicleType,
+                          setNewService({
+                            ...newService,
+                            VehicleTypeEnum: value as VehicleTypeEnum,
                           })
                         }
                       >
@@ -198,7 +163,7 @@ export default function CarWashServices() {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          {Object.values(VehicleType).map((type) => (
+                          {Object.values(VehicleTypeEnum).map((type) => (
                             <SelectItem key={type} value={type}>
                               {type}
                             </SelectItem>
@@ -206,20 +171,20 @@ export default function CarWashServices() {
                         </SelectContent>
                       </Select>
                     ) : (
-                      service.vehicleType
+                      service.VehicleTypeEnum
                     )}
                   </TableCell>
                   <TableCell>
                     {editingId === service.id ? (
                       <div className="flex flex-wrap gap-2">
-                        {Object.values(Services).map((serviceType) => (
+                        {Object.values(services).map((serviceType) => (
                           // biome-ignore lint/a11y/noLabelWithoutControl: <explanation>
                           <label
                             key={serviceType}
                             className="flex items-center space-x-2"
                           >
                             <Checkbox
-                              checked={(newWashService.services || []).includes(
+                              checked={(newService.services || []).includes(
                                 serviceType
                               )}
                               onCheckedChange={() => toggleService(serviceType)}
@@ -236,10 +201,10 @@ export default function CarWashServices() {
                     {editingId === service.id ? (
                       <Input
                         type="number"
-                        value={newWashService.price || service.price}
+                        value={newService.price || service.price}
                         onChange={(e) =>
-                          setNewWashService({
-                            ...newWashService,
+                          setNewService({
+                            ...newService,
                             price: Number.parseFloat(e.target.value),
                           })
                         }
@@ -279,7 +244,7 @@ export default function CarWashServices() {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => deleteWashService(service.id)}
+                          onClick={() => deleteService(service.id)}
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -291,11 +256,11 @@ export default function CarWashServices() {
               <TableRow>
                 <TableCell>
                   <Select
-                    value={newWashService.vehicleType || ''}
+                    value={newService.VehicleTypeEnum || ''}
                     onValueChange={(value) =>
-                      setNewWashService({
-                        ...newWashService,
-                        vehicleType: value as VehicleType,
+                      setNewService({
+                        ...newService,
+                        VehicleTypeEnum: value as VehicleTypeEnum,
                       })
                     }
                   >
@@ -303,7 +268,7 @@ export default function CarWashServices() {
                       <SelectValue placeholder="Seleccione tipo de vehículo" />
                     </SelectTrigger>
                     <SelectContent>
-                      {Object.values(VehicleType).map((type) => (
+                      {Object.values(VehicleTypeEnum).map((type) => (
                         <SelectItem key={type} value={type}>
                           {type}
                         </SelectItem>
@@ -313,14 +278,13 @@ export default function CarWashServices() {
                 </TableCell>
                 <TableCell>
                   <div className="flex flex-wrap gap-2">
-                    {Object.values(Services).map((serviceType) => (
-                      // biome-ignore lint/a11y/noLabelWithoutControl: <explanation>
+                    {Object.values(services).map((serviceType) => (
                       <label
                         key={serviceType}
                         className="flex items-center space-x-2"
                       >
                         <Checkbox
-                          checked={(newWashService.services || []).includes(
+                          checked={(newService.services || []).includes(
                             serviceType
                           )}
                           onCheckedChange={() => toggleService(serviceType)}
@@ -334,10 +298,10 @@ export default function CarWashServices() {
                   <Input
                     type="number"
                     placeholder="Precio"
-                    value={newWashService.price || ''}
+                    value={newService.price || ''}
                     onChange={(e) =>
-                      setNewWashService({
-                        ...newWashService,
+                      setNewService({
+                        ...newService,
                         price: Number.parseFloat(e.target.value),
                       })
                     }
@@ -345,7 +309,7 @@ export default function CarWashServices() {
                   />
                 </TableCell>
                 <TableCell>
-                  <Button variant="ghost" size="icon" onClick={addWashService}>
+                  <Button variant="ghost" size="icon" onClick={addService}>
                     <Plus className="h-4 w-4" />
                   </Button>
                 </TableCell>

@@ -25,5 +25,3 @@ export const appointment = pgTable('appointment', {
     .notNull()
     .references(() => customer.id, { onDelete: 'cascade' }),
 });
-
-export type Appointment = InferSelectModel<typeof appointment>;

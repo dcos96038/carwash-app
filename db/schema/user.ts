@@ -102,5 +102,3 @@ export const customer = pgTable('customer', {
     .references(() => users.id, { onDelete: 'cascade' }),
   contactNumber: text('contact_number'),
 });
-
-export type User = InferSelectModel<typeof users>;

@@ -1,0 +1,57 @@
+import { createInsertSchema } from 'drizzle-zod';
+import z from 'zod';
+import { InferSafeActionFnResult } from 'next-safe-action';
+import { CommonOptions } from '@/types/common.types';
+import { Service } from '@/types/services.types';
+import { service } from '../../../../../db/schema/service';
+import { getUsersForCombobox } from './actions';
+
+export const createserviceSchema = createInsertSchema(service, {
+  name: z.string().min(3).max(100),
+  carwashLocationId: z.string().uuid(),
+  price: z.coerce.number().min(0),
+  description: z.string().min(3).max(1000),
+  vehicleType: z.array(z.enum(['car', 'suv', 'motorcycle'])),
+}).omit({
+  status: true,
+  createdAt: true,
+  updatedAt: true,
+  id: true,
+});
+export type CreateService = z.infer<typeof createserviceSchema>;
+
+export type UsersForCombobox = InferSafeActionFnResult<
+  typeof getUsersForCombobox
+>['data'];
+
+export const getserviceesInputSchema = z.custom<CommonOptions<Service>>(
+  (value) => {
+    if (typeof value.page !== 'number') {
+      throw new Error('page must be a number');
+    }
+
+    if (typeof value.limit !== 'number') {
+      throw new Error('limit must be a number');
+    }
+
+    if (value.sortBy) {
+      for (const key in value.sortBy) {
+        if (value.sortBy[key] !== 'asc' && value.sortBy[key] !== 'desc') {
+          throw new Error('sortBy must be either "asc" or "desc"');
+        }
+      }
+    }
+
+    if (value.filter) {
+      if (typeof value.filter.key !== 'string') {
+        throw new Error('filter.key must be a string');
+      }
+
+      if (typeof value.filter.value !== 'string') {
+        throw new Error('filter.value must be a string');
+      }
+    }
+
+    return value;
+  }
+);

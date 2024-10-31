@@ -10,9 +10,10 @@ import { users } from './user';
 import { defaultColumns } from '../lib';
 
 export const carwashStatus = pgEnum('carwash_status', [
-  'open',
-  'closed',
+  'active',
+  'inactive',
   'full',
+  'out_of_service',
 ]);
 
 export const carwash = pgTable('carwash', {
@@ -30,5 +31,5 @@ export const carwash = pgTable('carwash', {
   closingHours: time('closing_hours').notNull(),
   email: text('email'),
   logo: text('logo'),
-  status: carwashStatus('status').notNull().default('open'),
+  status: carwashStatus('status').notNull().default('active'),
 });

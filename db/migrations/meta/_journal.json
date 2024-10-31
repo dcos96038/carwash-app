@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1729638004577,
-      "tag": "0000_ambitious_tyger_tiger",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1729698731815,
-      "tag": "0001_uneven_tomorrow_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1729736110326,
-      "tag": "0002_wakeful_black_tarantula",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1729780046661,
-      "tag": "0003_sturdy_cassandra_nova",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1729782890749,
-      "tag": "0004_fresh_the_santerians",
+      "when": 1730410048391,
+      "tag": "0000_stale_clea",
       "breakpoints": true
     }
   ]

@@ -4,9 +4,9 @@ import { InferSafeActionFnResult } from 'next-safe-action';
 import { CommonOptions } from '@/types/common.types';
 import { Service } from '@/types/services.types';
 import { service } from '../../../../../db/schema/service';
-import { getUsersForCombobox } from './actions';
+import { getServicesForCombobox, getVehicleTypesForCombobox } from './actions';
 
-export const createserviceSchema = createInsertSchema(service, {
+export const createServiceSchema = createInsertSchema(service, {
   name: z.string().min(3).max(100),
   carwashLocationId: z.string().uuid(),
   price: z.coerce.number().min(0),
@@ -18,13 +18,17 @@ export const createserviceSchema = createInsertSchema(service, {
   updatedAt: true,
   id: true,
 });
-export type CreateService = z.infer<typeof createserviceSchema>;
+export type CreateService = z.infer<typeof createServiceSchema>;
 
-export type UsersForCombobox = InferSafeActionFnResult<
-  typeof getUsersForCombobox
+export type ServicesForCombobox = InferSafeActionFnResult<
+  typeof getServicesForCombobox
 >['data'];
 
-export const getserviceesInputSchema = z.custom<CommonOptions<Service>>(
+export type VehicleTypesForCombobox = InferSafeActionFnResult<
+  typeof getVehicleTypesForCombobox
+>['data'];
+
+export const getServicesInputSchema = z.custom<CommonOptions<Service>>(
   (value) => {
     if (typeof value.page !== 'number') {
       throw new Error('page must be a number');

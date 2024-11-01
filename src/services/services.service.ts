@@ -1,7 +1,7 @@
 import { Service } from '@/types/services.types';
 import { db } from '../../db';
 import { service } from '../../db/schema/service';
-import { CreateService } from '@/app/(authenticated)/dashboard/services/schemas';
+import { CreateService } from '@/app/(authenticated)/admin/services/schemas';
 import { CommonOptions } from '@/types/common.types';
 
 export class ServicesService {
@@ -12,6 +12,7 @@ export class ServicesService {
   }
 
   async insertService(input: CreateService): Promise<Service> {
+    console.log('insert');
     const result = await this.db.insert(service).values([input]).returning();
 
     const insertedService = result.pop();

@@ -1,9 +1,11 @@
-import type { Carwash } from '@/types/carwash.types';
-import { db } from '../../db';
-import { carwash } from '../../db/schema/carwash';
-import { CreateCarwash } from '@/app/(authenticated)/admin/carwash/schemas';
-import { CommonOptions } from '@/types/common.types';
-import { asc, desc, ilike } from 'drizzle-orm';
+import { CreateCarwash } from "@/app/(authenticated)/admin/carwash/schemas";
+import { asc, desc, ilike } from "drizzle-orm";
+
+import type { Carwash } from "@/types/carwash.types";
+import { CommonOptions } from "@/types/common.types";
+
+import { db } from "../../db";
+import { carwash } from "../../db/schema/carwash";
 
 export class CarwashService {
   private readonly db = db;
@@ -20,12 +22,12 @@ export class CarwashService {
           between(
             locations.latitude,
             coords.northWestLat,
-            coords.southEastLat
+            coords.southEastLat,
           ) &&
           between(
             locations.longitude,
             coords.northWestLng,
-            coords.southEastLng
+            coords.southEastLng,
           ),
       }),
     });
@@ -72,7 +74,7 @@ export class CarwashService {
     const insertedCarwash = result.pop();
 
     if (!insertedCarwash) {
-      throw new Error('Failed to insert carwash');
+      throw new Error("Failed to insert carwash");
     }
 
     return insertedCarwash;

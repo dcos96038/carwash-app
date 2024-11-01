@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { useQueryState, parseAsFloat } from 'nuqs';
-import { useDebounceCallback } from 'usehooks-ts';
+import { parseAsFloat, useQueryState } from "nuqs";
+import { useDebounceCallback } from "usehooks-ts";
 
 export const useCoordinates = () => {
-  const [nwLat, setNwLat] = useQueryState('nwLat', {
+  const [nwLat, setNwLat] = useQueryState("nwLat", {
     ...parseAsFloat,
   });
-  const [nwLng, setNwLng] = useQueryState('nwLng', {
+  const [nwLng, setNwLng] = useQueryState("nwLng", {
     ...parseAsFloat,
   });
-  const [seLat, setSeLat] = useQueryState('seLat', {
+  const [seLat, setSeLat] = useQueryState("seLat", {
     ...parseAsFloat,
   });
-  const [seLng, setSeLng] = useQueryState('seLng', {
+  const [seLng, setSeLng] = useQueryState("seLng", {
     ...parseAsFloat,
   });
 

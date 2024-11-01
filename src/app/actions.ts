@@ -1,8 +1,9 @@
-'use server';
+"use server";
 
-import z from 'zod';
-import { CarwashService } from '@/services/carwash.service';
-import { actionClient } from '@/lib/safe-action-clients';
+import { CarwashService } from "@/services/carwash.service";
+import z from "zod";
+
+import { actionClient } from "@/lib/safe-action-clients";
 
 const getLocationsSchema = z.object({
   coords: z
@@ -17,7 +18,7 @@ const getLocationsSchema = z.object({
 
 export const getLocationsAction = actionClient
   .metadata({
-    actionName: 'getLocations',
+    actionName: "getLocations",
   })
   .schema(getLocationsSchema)
   .action(async ({ parsedInput }) => {
@@ -33,7 +34,7 @@ const searchLocationsSchema = z.object({
 
 export const searchLocations = actionClient
   .metadata({
-    actionName: 'searchLocations',
+    actionName: "searchLocations",
   })
   .schema(searchLocationsSchema)
   .action(async ({ parsedInput }) => {

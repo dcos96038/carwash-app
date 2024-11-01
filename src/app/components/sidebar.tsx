@@ -1,11 +1,14 @@
-'use client';
+"use client";
 
-import type { Carwash } from '@/types/carwash.types';
-import { CarFront, LogOutIcon } from 'lucide-react';
-import { LocationButton } from './location-button';
-import { signOut, useSession } from 'next-auth/react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { CarFront, LogOutIcon } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
+
+import type { Carwash } from "@/types/carwash.types";
+
+import { Button } from "@/components/ui/button";
+
+import { LocationButton } from "./location-button";
 
 interface SidebarProps {
   locations: Carwash[];
@@ -15,18 +18,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ locations }) => {
   const session = useSession();
 
   return (
-    <div className="min-w-96 flex flex-col text-gray-200 pt-6 px-4 gap-4">
-      <div className="flex gap-1 justify-center items-center">
+    <div className="flex min-w-96 flex-col gap-4 px-4 pt-6 text-gray-200">
+      <div className="flex items-center justify-center gap-1">
         <CarFront />
-        <h1 className="font-semibold text-xl text-center">Carwash App</h1>
+        <h1 className="text-center text-xl font-semibold">Carwash App</h1>
       </div>
-      {session.status === 'authenticated' && (
+      {session.status === "authenticated" && (
         <div className="flex items-center justify-between">
-          <p className="italic text-gray-500 text-sm">
+          <p className="text-sm italic text-gray-500">
             Logged in as {session.data.user.email}
           </p>
           <Button
-            size={'sm'}
+            size={"sm"}
             type="button"
             onClick={async () => {
               await signOut();
@@ -38,7 +41,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ locations }) => {
         </div>
       )}
       <Button asChild>
-        <Link href={'/dashboard'}>Dashboard</Link>
+        <Link href={"/dashboard"}>Dashboard</Link>
       </Button>
 
       <div className="flex flex-col gap-2">

@@ -1,9 +1,9 @@
-import { MapProvider } from '@/context/use-map';
-import type { PropsWithChildren } from 'react';
+import { BASE_PATH, auth } from "@/auth";
+import { MapProvider } from "@/context/use-map";
+import type { PropsWithChildren } from "react";
 
-import { auth, BASE_PATH } from '@/auth';
-import SessionProvider from './session-provider';
-import { Toaster } from './ui/sonner';
+import SessionProvider from "./session-provider";
+import { Toaster } from "./ui/sonner";
 
 export const AppProviders = async ({ children }: PropsWithChildren) => {
   const session = await auth();

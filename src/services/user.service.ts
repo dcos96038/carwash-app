@@ -1,6 +1,7 @@
-import { eq } from 'drizzle-orm';
-import { db } from '../../db';
-import { users } from '../../db/schema/user';
+import { eq } from "drizzle-orm";
+
+import { db } from "../../db";
+import { users } from "../../db/schema/user";
 
 export class UserService {
   private readonly db = db;
@@ -46,7 +47,7 @@ export class UserService {
     const result = await this.db.query.users.findMany();
 
     if (!result) {
-      throw new Error('Failed to get users');
+      throw new Error("Failed to get users");
     }
 
     return result.map((u) => ({

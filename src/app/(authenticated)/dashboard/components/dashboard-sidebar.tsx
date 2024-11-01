@@ -1,6 +1,11 @@
-import { auth } from '@/auth';
-import { LogoutButton } from '@/components/logout-button';
-import { Button } from '@/components/ui/button';
+import { auth } from "@/auth";
+import { LayoutDashboard } from "lucide-react";
+import Link from "next/link";
+
+import { UserRolesEnum } from "@/types/user.types";
+
+import { LogoutButton } from "@/components/logout-button";
+import { Button } from "@/components/ui/button";
 import {
   Sidebar,
   SidebarContent,
@@ -12,15 +17,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarTrigger,
-} from '@/components/ui/sidebar';
-import { LayoutDashboard } from 'lucide-react';
-import Link from 'next/link';
-import { UserRolesEnum } from '@/types/user.types';
+} from "@/components/ui/sidebar";
 
 const items = [
   {
-    title: 'Dashboard',
-    url: '/dashboard',
+    title: "Dashboard",
+    url: "/dashboard",
     icon: LayoutDashboard,
   },
   // {

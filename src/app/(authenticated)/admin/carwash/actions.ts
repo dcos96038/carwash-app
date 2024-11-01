@@ -1,14 +1,16 @@
-'use server';
+"use server";
 
-import { authActionClient } from '@/lib/safe-action-clients';
-import { CarwashService } from '@/services/carwash.service';
-import { UserService } from '@/services/user.service';
-import { createCarwashSchema, getCarwashesInputSchema } from './schemas';
-import { redirect } from 'next/navigation';
+import { CarwashService } from "@/services/carwash.service";
+import { UserService } from "@/services/user.service";
+import { redirect } from "next/navigation";
+
+import { authActionClient } from "@/lib/safe-action-clients";
+
+import { createCarwashSchema, getCarwashesInputSchema } from "./schemas";
 
 export const createCarwash = authActionClient
   .metadata({
-    actionName: 'createCarwash',
+    actionName: "createCarwash",
   })
   .schema(createCarwashSchema)
   .action(async ({ parsedInput }) => {
@@ -16,12 +18,12 @@ export const createCarwash = authActionClient
 
     await carwashService.insertCarwash(parsedInput);
 
-    redirect('/admin/carwash');
+    redirect("/admin/carwash");
   });
 
 export const getUsersForCombobox = authActionClient
   .metadata({
-    actionName: 'getUsersForCombobox',
+    actionName: "getUsersForCombobox",
   })
   .action(async () => {
     const userService = new UserService();
@@ -30,7 +32,7 @@ export const getUsersForCombobox = authActionClient
 
     return result.map((u) => {
       return {
-        label: u.name ?? '',
+        label: u.name ?? "",
         value: u.id,
       };
     });
@@ -38,7 +40,7 @@ export const getUsersForCombobox = authActionClient
 
 export const getCarwashes = authActionClient
   .metadata({
-    actionName: 'getCarwashes',
+    actionName: "getCarwashes",
   })
   .schema(getCarwashesInputSchema)
   .action(async ({ parsedInput }) => {

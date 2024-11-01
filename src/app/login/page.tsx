@@ -1,19 +1,20 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
+import { signIn } from "next-auth/react";
+
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { signIn } from 'next-auth/react';
+} from "@/components/ui/card";
 
 export default function Page() {
   return (
-    <div className="flex items-center justify-center w-full">
-      <Card className="max-w-96 w-full">
+    <div className="flex w-full items-center justify-center">
+      <Card className="w-full max-w-96">
         <CardHeader>
           <CardTitle>Carwash Dashboard</CardTitle>
           <CardDescription>Log in to access to the dashboard</CardDescription>
@@ -21,11 +22,11 @@ export default function Page() {
         <CardContent>
           <Button
             onClick={() => {
-              signIn('google', {
-                redirectTo: '/dashboard',
+              signIn("google", {
+                redirectTo: "/dashboard",
               });
             }}
-            className="w-full flex items-center gap-1"
+            className="flex w-full items-center gap-1"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

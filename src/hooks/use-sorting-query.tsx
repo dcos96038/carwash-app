@@ -1,9 +1,10 @@
-import { sortingParser } from '@/lib/search-params';
-import { SortingState } from '@tanstack/react-table';
-import { useQueryState } from 'nuqs';
+import { SortingState } from "@tanstack/react-table";
+import { useQueryState } from "nuqs";
+
+import { sortingParser } from "@/lib/search-params";
 
 export const useSortingQuery = () => {
-  const [sorting, setSorting] = useQueryState<SortingState>('sorting', {
+  const [sorting, setSorting] = useQueryState<SortingState>("sorting", {
     ...sortingParser,
     shallow: false,
   });

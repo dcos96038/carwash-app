@@ -1,5 +1,6 @@
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { AdminSidebar } from './components/admin-sidebar';
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+
+import { AdminSidebar } from "./components/admin-sidebar";
 
 export default async function Layout({
   children,
@@ -9,8 +10,8 @@ export default async function Layout({
   return (
     <SidebarProvider>
       <AdminSidebar />
-      <SidebarTrigger className="absolute top-2 left-2" />
-      <main className="flex-1 flex items-center justify-center">
+      <SidebarTrigger className="absolute left-2 top-2" />
+      <main className="flex flex-1 items-center justify-center">
         {children}
       </main>
     </SidebarProvider>

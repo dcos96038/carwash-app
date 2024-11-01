@@ -1,5 +1,8 @@
-import { LogoutButton } from '@/components/logout-button';
-import { Button } from '@/components/ui/button';
+import { Car, Users } from "lucide-react";
+import Link from "next/link";
+
+import { LogoutButton } from "@/components/logout-button";
+import { Button } from "@/components/ui/button";
 import {
   Sidebar,
   SidebarContent,
@@ -11,19 +14,17 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarTrigger,
-} from '@/components/ui/sidebar';
-import { Car, Users } from 'lucide-react';
-import Link from 'next/link';
+} from "@/components/ui/sidebar";
 
 const items = [
   {
-    title: 'Users',
-    url: '/admin',
+    title: "Users",
+    url: "/admin",
     icon: Users,
   },
   {
-    title: 'Carwash',
-    url: '/admin/carwash',
+    title: "Carwash",
+    url: "/admin/carwash",
     icon: Car,
   },
   // {

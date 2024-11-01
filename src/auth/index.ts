@@ -1,11 +1,12 @@
-import NextAuth from 'next-auth';
-import { authConfig } from './auth-config';
-import { db } from '../../db';
-import { DrizzleAdapter } from '@auth/drizzle-adapter';
-import { users, accounts } from '../../db/schema/user';
-import { UserService } from '@/services/user.service';
+import { UserService } from "@/services/user.service";
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import NextAuth from "next-auth";
 
-export const BASE_PATH = '/api/auth';
+import { db } from "../../db";
+import { accounts, users } from "../../db/schema/user";
+import { authConfig } from "./auth-config";
+
+export const BASE_PATH = "/api/auth";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
@@ -13,14 +14,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     usersTable: users,
     accountsTable: accounts,
   }),
-  basePath: '/api/auth',
+  basePath: "/api/auth",
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
   },
   pages: {
-    error: '/',
-    signIn: '/',
-    signOut: '/',
+    error: "/",
+    signIn: "/",
+    signOut: "/",
   },
   callbacks: {
     async session({ session }) {
@@ -29,9 +30,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       if (dbUser) {
         session.user.id = dbUser.id;
-        session.user.name = dbUser.name || '';
-        session.user.email = dbUser.email || '';
-        session.user.image = dbUser.image || '';
+        session.user.name = dbUser.name || "";
+        session.user.email = dbUser.email || "";
+        session.user.image = dbUser.image || "";
         session.user.role = dbUser.role;
       }
 

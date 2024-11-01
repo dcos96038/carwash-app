@@ -1,13 +1,14 @@
-import { SortingState } from '@tanstack/react-table';
+import { SortingState } from "@tanstack/react-table";
 import {
   createParser,
   createSearchParamsCache,
   parseAsFloat,
   parseAsInteger,
   parseAsJson,
-} from 'nuqs/server';
-import z from 'zod';
-import { Constants } from './constants';
+} from "nuqs/server";
+import z from "zod";
+
+import { Constants } from "./constants";
 
 export const pageIndexParser = createParser({
   parse: (query) => {
@@ -25,15 +26,15 @@ export const paginationParsers = {
 };
 
 export const paginationUrlKeys = {
-  pageIndex: 'page',
-  pageSize: 'perPage',
+  pageIndex: "page",
+  pageSize: "perPage",
 };
 
 const sortingSchema = z.custom<SortingState>((value) => value);
 
 export const sortingParser = parseAsJson(sortingSchema.parse).withDefault([
   {
-    id: 'createdAt',
+    id: "createdAt",
     desc: true,
   },
 ]);

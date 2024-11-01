@@ -1,5 +1,6 @@
-import { paginationParsers, paginationUrlKeys } from '@/lib/search-params';
-import { useQueryStates } from 'nuqs';
+import { useQueryStates } from "nuqs";
+
+import { paginationParsers, paginationUrlKeys } from "@/lib/search-params";
 
 export const usePaginationQuery = () => {
   return useQueryStates(paginationParsers, {

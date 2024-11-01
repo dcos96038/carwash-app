@@ -1,5 +1,5 @@
-import type { users } from '../../db/schema/user';
-import { roles } from '../../db/schema/user';
+import type { users } from "../../db/schema/user";
+import { roles } from "../../db/schema/user";
 
 function createEnum<T extends string>(arr: T[]): { [K in T]: K } {
   return arr.reduce(
@@ -7,7 +7,7 @@ function createEnum<T extends string>(arr: T[]): { [K in T]: K } {
       acc[curr] = curr;
       return acc;
     },
-    {} as { [K in T]: K }
+    {} as { [K in T]: K },
   );
 }
 

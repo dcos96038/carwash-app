@@ -1,6 +1,6 @@
-import { SortingState } from '@tanstack/react-table';
+import { SortingState } from "@tanstack/react-table";
 
-export type SortOrder = 'asc' | 'desc';
+export type SortOrder = "asc" | "desc";
 
 export type SortOptions<T> = { [K in keyof T]?: SortOrder };
 

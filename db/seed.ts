@@ -1,7 +1,7 @@
-import { db } from '.';
-import { carwash } from './schema/carwash';
+import { db } from ".";
+import { carwash } from "./schema/carwash";
 
-const seedData: Omit<typeof carwash.$inferSelect, 'id'>[] = [
+const seedData: Omit<typeof carwash.$inferSelect, "id">[] = [
   // {
   // 	name: "Car Wash Lules Centro",
   // 	address: "Av. San Martín 123, Lules, Tucumán, Argentina",
@@ -33,9 +33,9 @@ const seedData: Omit<typeof carwash.$inferSelect, 'id'>[] = [
 
 async function main() {
   async function seedCarwashLocations() {
-    console.log('Seeding carwash locations...');
+    console.log("Seeding carwash locations...");
     await db.insert(carwash).values(seedData);
-    console.log('Seeding completed!');
+    console.log("Seeding completed!");
   }
 
   // Call the seeding function

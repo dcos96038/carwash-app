@@ -1,4 +1,11 @@
-'use client';
+"use client";
+
+import { Search } from "lucide-react";
+import { useAction } from "next-safe-action/hooks";
+import { useCallback, useEffect, useState } from "react";
+import { useDebounceCallback } from "usehooks-ts";
+
+import type { Carwash } from "@/types/carwash.types";
 
 import {
   Drawer,
@@ -7,15 +14,11 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@/components/ui/drawer';
-import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
-import { useDebounceCallback } from 'usehooks-ts';
-import { searchLocations } from '../actions';
-import type { Carwash } from '@/types/carwash.types';
-import { LocationButton } from './location-button';
-import { useAction } from 'next-safe-action/hooks';
+} from "@/components/ui/drawer";
+import { Input } from "@/components/ui/input";
+
+import { searchLocations } from "../actions";
+import { LocationButton } from "./location-button";
 
 export const SearchDrawer = () => {
   const { execute } = useAction(searchLocations, {
@@ -25,10 +28,10 @@ export const SearchDrawer = () => {
       }
     },
     onError: (error) => {
-      console.error('Error fetching search results', error);
+      console.error("Error fetching search results", error);
     },
   });
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState("");
   const [results, setResults] = useState<Carwash[]>([]);
 
   const debouncedSearchValue = useDebounceCallback(setSearchValue, 500);
@@ -37,7 +40,7 @@ export const SearchDrawer = () => {
     async (searchValue: string) => {
       execute({ query: searchValue });
     },
-    [execute]
+    [execute],
   );
 
   useEffect(() => {
@@ -50,10 +53,10 @@ export const SearchDrawer = () => {
 
   return (
     <Drawer>
-      <DrawerTrigger className="flex gap-1 items-center justify-center bg-gray-950 hover:bg-gray-800 p-2 rounded-lg w-12 hover:w-48 transition-all duration-300 overflow-hidden group">
-        <span className="text-sm text-white hidden group-hover:block truncate">
+      <DrawerTrigger className="group flex w-12 items-center justify-center gap-1 overflow-hidden rounded-lg bg-gray-950 p-2 transition-all duration-300 hover:w-48 hover:bg-gray-800">
+        <span className="hidden truncate text-sm text-white group-hover:block">
           Search for car washes
-        </span>{' '}
+        </span>{" "}
         <Search color="white" />
       </DrawerTrigger>
       <DrawerContent className="z-[1000] pb-20">
@@ -72,14 +75,14 @@ export const SearchDrawer = () => {
         </div>
 
         {results.length ? (
-          <div className="flex flex-col gap-2 px-4 mt-4">
+          <div className="mt-4 flex flex-col gap-2 px-4">
             {results.map((result) => (
               <LocationButton key={result.id} location={result} />
             ))}
           </div>
         ) : (
-          <div className="flex items-center justify-center h-24">
-            <span className="text-lg italic font-medium text-white">
+          <div className="flex h-24 items-center justify-center">
+            <span className="text-lg font-medium italic text-white">
               No results found
             </span>
           </div>

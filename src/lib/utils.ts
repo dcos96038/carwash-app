@@ -23,6 +23,6 @@ export function createEnum<T extends string>(arr: T[]): { [K in T]: K } {
       acc[curr] = curr;
       return acc;
     },
-    {} as { [K in T]: K }
+    {} as { [K in T]: K },
   );
 }

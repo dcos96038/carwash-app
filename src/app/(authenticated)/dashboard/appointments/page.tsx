@@ -1,8 +1,11 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Edit, Trash2 } from "lucide-react";
+import { useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -10,17 +13,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Edit, Trash2 } from 'lucide-react';
-import { useState } from 'react';
-import { Appointment } from '../../../../../db/schema/appointment';
+} from "@/components/ui/table";
+
+import { Appointment } from "../../../../../db/schema/appointment";
 
 export default function Page() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [licensePlate, setLicensePlate] = useState('');
-  const [scheduletAt, setScheduletAt] = useState('');
+  const [licensePlate, setLicensePlate] = useState("");
+  const [scheduletAt, setScheduletAt] = useState("");
   const [estimatedFinishedAt, setEstimatedFinishedAt] = useState<string | null>(
-    ''
+    "",
   );
   const [editing, setEditing] = useState<string | null>(null);
 
@@ -29,20 +31,20 @@ export default function Page() {
       setAppointments([
         ...appointments,
         {
-          id: '',
+          id: "",
           createdAt: new Date(),
           estimated_finished_at: new Date(estimatedFinishedAt),
           finished_at: new Date(), //TODO: update this
           scheduled_at: new Date(scheduletAt),
-          carwashId: '',
-          customerId: '',
-          status: 'pending',
+          carwashId: "",
+          customerId: "",
+          status: "pending",
           updatedAt: new Date(),
         },
       ]);
-      setLicensePlate('');
-      setScheduletAt('');
-      setEstimatedFinishedAt('');
+      setLicensePlate("");
+      setScheduletAt("");
+      setEstimatedFinishedAt("");
     }
   };
 
@@ -57,13 +59,13 @@ export default function Page() {
                 scheduletAt: scheduletAt,
                 estimatedFinishedAt: estimatedFinishedAt,
               }
-            : a
-        )
+            : a,
+        ),
       );
       setEditing(null);
-      setLicensePlate('');
-      setScheduletAt('');
-      setEstimatedFinishedAt('');
+      setLicensePlate("");
+      setScheduletAt("");
+      setEstimatedFinishedAt("");
     }
   };
 
@@ -74,14 +76,14 @@ export default function Page() {
   const setActualExitTime = (id: string, time: string) => {
     setAppointments(
       appointments.map((a) =>
-        a.id === id ? { ...a, actualExitTime: time } : a
-      )
+        a.id === id ? { ...a, actualExitTime: time } : a,
+      ),
     );
   };
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Pepito warcash</h1>
+      <h1 className="mb-4 text-2xl font-bold">Pepito warcash</h1>
 
       <Card className="mb-6">
         <CardHeader>
@@ -94,7 +96,7 @@ export default function Page() {
         </CardContent>
       </Card>
 
-      <div className="grid gap-4 mb-6">
+      <div className="mb-6 grid gap-4">
         <Input
           placeholder="Placa del auto"
           value={licensePlate}
@@ -113,7 +115,7 @@ export default function Page() {
           onChange={(e) => setEstimatedFinishedAt(e.target.value)}
         />
         <Button onClick={editing ? updateAppointment : addAppointment}>
-          {editing ? 'Actualizar Turno' : 'Agregar Turno'}
+          {editing ? "Actualizar Turno" : "Agregar Turno"}
         </Button>
       </div>
 
@@ -130,7 +132,7 @@ export default function Page() {
         <TableBody>
           {appointments.map((appointment) => (
             <TableRow key={appointment.id}>
-              <TableCell>{'asd123'}</TableCell>
+              <TableCell>{"asd123"}</TableCell>
               <TableCell>{appointment.scheduled_at.toString()}</TableCell>
               <TableCell>
                 {appointment.estimated_finished_at?.toString()}

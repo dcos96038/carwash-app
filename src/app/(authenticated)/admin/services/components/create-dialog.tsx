@@ -1,6 +1,15 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PlusCircle } from "lucide-react";
+import { useAction } from "next-safe-action/hooks";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -8,11 +17,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { PlusCircle } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { createServiceSchema } from '../schemas';
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -20,15 +25,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { CreateService, VehicleTypesForCombobox } from '../schemas';
-import { useAction } from 'next-safe-action/hooks';
-import { toast } from 'sonner';
-import { useState } from 'react';
-import { createService } from '../actions';
-import { z } from 'zod';
-import { Checkbox } from '@/components/ui/checkbox';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+
+import { createService } from "../actions";
+import { createServiceSchema } from "../schemas";
+import { CreateService, VehicleTypesForCombobox } from "../schemas";
 
 interface CreateVehicleTypeDialogProps {
   vehicleTypes: VehicleTypesForCombobox;
@@ -40,7 +42,7 @@ export const CreateServiceDialog: React.FC<CreateVehicleTypeDialogProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const { execute, isExecuting } = useAction(createService, {
     onSuccess: () => {
-      toast.success('Service created successfully');
+      toast.success("Service created successfully");
       setIsOpen(false);
     },
     onError: (e) => {
@@ -59,7 +61,7 @@ export const CreateServiceDialog: React.FC<CreateVehicleTypeDialogProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="ml-auto" size={'sm'}>
+        <Button className="ml-auto" size={"sm"}>
           Add a service
           <PlusCircle />
         </Button>
@@ -138,8 +140,8 @@ export const CreateServiceDialog: React.FC<CreateVehicleTypeDialogProps> = ({
                                       ])
                                     : field.onChange(
                                         currentValues.filter(
-                                          (v) => v !== vehicle.value
-                                        )
+                                          (v) => v !== vehicle.value,
+                                        ),
                                       );
                                 }}
                               />
@@ -175,7 +177,7 @@ export const CreateServiceDialog: React.FC<CreateVehicleTypeDialogProps> = ({
           </div> */}
 
           <Button disabled={isExecuting} onClick={onSubmit}>
-            {' '}
+            {" "}
             //TODO: fix this Create Service
           </Button>
         </Form>

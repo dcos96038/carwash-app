@@ -1,8 +1,10 @@
-import { searchParamsCache } from '@/lib/search-params';
-import { getServices, getVehicleTypesForCombobox } from './actions';
-import { CreateServiceDialog } from './components/create-dialog';
-import { DataTable } from '@/components/data-table';
-import { serviceColumns } from './components/columns';
+import { searchParamsCache } from "@/lib/search-params";
+
+import { DataTable } from "@/components/data-table";
+
+import { getServices, getVehicleTypesForCombobox } from "./actions";
+import { serviceColumns } from "./components/columns";
+import { CreateServiceDialog } from "./components/create-dialog";
 
 export default async function Page({
   searchParams,
@@ -17,9 +19,9 @@ export default async function Page({
   });
 
   return (
-    <div className="w-full h-full p-10 flex flex-col gap-5">
+    <div className="flex h-full w-full flex-col gap-5 p-10">
       <div className="flex">
-        <h1 className="font-semibold text-2xl">Services List</h1>
+        <h1 className="text-2xl font-semibold">Services List</h1>
         <CreateServiceDialog vehicleTypes={vehicleTypes?.data} />
       </div>
       <DataTable

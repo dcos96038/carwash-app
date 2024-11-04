@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { LayoutDashboard } from "lucide-react";
+import { CarFront, LayoutDashboard, PencilIcon } from "lucide-react";
 import Link from "next/link";
 
 import { UserRolesEnum } from "@/types/user.types";
@@ -17,10 +17,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarTrigger,
-} from '@/components/ui/sidebar';
-import { UserRolesEnum } from '@/types/user.types';
-import { CarFront, LayoutDashboard, PencilIcon } from 'lucide-react';
-import Link from 'next/link';
+} from "@/components/ui/sidebar";
 
 const items = [
   {
@@ -29,13 +26,13 @@ const items = [
     icon: LayoutDashboard,
   },
   {
-    title: 'Servicios',
-    url: '/dashboard/services',
+    title: "Servicios",
+    url: "/dashboard/services",
     icon: CarFront,
   },
   {
-    title: 'Turnos',
-    url: '/dashboard/appointments',
+    title: "Turnos",
+    url: "/dashboard/appointments",
     icon: PencilIcon,
   },
   // {

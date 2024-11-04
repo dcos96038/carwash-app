@@ -1,8 +1,10 @@
-import { eq } from 'drizzle-orm';
-import { db } from '../../db';
-import bcrypt from 'bcryptjs';
-import { User } from '@/types/user.types';
-import { users } from '../../db/schema/user';
+import bcrypt from "bcryptjs";
+import { eq } from "drizzle-orm";
+
+import { User } from "@/types/user.types";
+
+import { db } from "../../db";
+import { users } from "../../db/schema/user";
 
 export class UserService {
   private readonly db = db;
@@ -27,7 +29,7 @@ export class UserService {
 
   async addUserToDb(
     email: string,
-    password: string
+    password: string,
   ): Promise<User | undefined> {
     const saltedPassword = this.passwordToSalt(password);
 

@@ -1,9 +1,10 @@
-import { createEnum } from '@/lib/utils';
+import { createEnum } from "@/lib/utils";
+
 import {
   service,
   serviceTransaction,
   vehicleType,
-} from '../../db/schema/service';
+} from "../../db/schema/service";
 
 export type Service = typeof service.$inferSelect;
 

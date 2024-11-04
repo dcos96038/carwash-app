@@ -28,8 +28,8 @@ const items = [
     icon: Car,
   },
   {
-    title: 'Services',
-    url: '/admin/services',
+    title: "Services",
+    url: "/admin/services",
     icon: Car,
   },
   // {

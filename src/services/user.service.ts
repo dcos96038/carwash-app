@@ -69,7 +69,7 @@ export class UserService {
     const result = await this.db.query.users.findMany();
 
     if (!result) {
-      throw new Error('Failed to get users');
+      throw new Error("Failed to get users");
     }
 
     return result.map((u) => ({

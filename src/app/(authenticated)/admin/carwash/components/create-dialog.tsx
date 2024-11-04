@@ -1,6 +1,14 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PlusCircle } from "lucide-react";
+import { useAction } from "next-safe-action/hooks";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { ComboBox } from "@/components/combo-box";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,11 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { PlusCircle } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { createCarwash } from '../actions';
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -20,17 +24,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { ComboBox } from '@/components/combo-box';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+
+import { createCarwash } from "../actions";
 import {
   CreateCarwash,
-  createCarwashSchema,
   UsersForCombobox,
-} from '../schemas';
-import { useAction } from 'next-safe-action/hooks';
-import { toast } from 'sonner';
-import { useState } from 'react';
+  createCarwashSchema,
+} from "../schemas";
 
 interface CreateCarwashDialogProps {
   users: UsersForCombobox;
@@ -43,7 +45,7 @@ export const CreateCarwashDialog: React.FC<CreateCarwashDialogProps> = ({
 
   const { execute, isExecuting } = useAction(createCarwash, {
     onSuccess: () => {
-      toast.success('Carwash created successfully');
+      toast.success("Carwash created successfully");
       setIsOpen(false);
     },
     onError: (e) => {
@@ -62,7 +64,7 @@ export const CreateCarwashDialog: React.FC<CreateCarwashDialogProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="ml-auto" size={'sm'}>
+        <Button className="ml-auto" size={"sm"}>
           Add a car wash
           <PlusCircle />
         </Button>
@@ -101,7 +103,7 @@ export const CreateCarwashDialog: React.FC<CreateCarwashDialogProps> = ({
                   <Input
                     placeholder="email@provider.com"
                     {...field}
-                    value={field.value ?? ''}
+                    value={field.value ?? ""}
                   />
                 </FormControl>
                 <FormMessage />
@@ -121,7 +123,7 @@ export const CreateCarwashDialog: React.FC<CreateCarwashDialogProps> = ({
                   <Input
                     placeholder="https://example.com/logo.png"
                     {...field}
-                    value={field.value ?? ''}
+                    value={field.value ?? ""}
                   />
                 </FormControl>
                 <FormMessage />
@@ -141,7 +143,7 @@ export const CreateCarwashDialog: React.FC<CreateCarwashDialogProps> = ({
                   <Input
                     placeholder="123-456-7890"
                     {...field}
-                    value={field.value ?? ''}
+                    value={field.value ?? ""}
                   />
                 </FormControl>
                 <FormMessage />

@@ -1,14 +1,21 @@
 {
-  "semi": true,
-  "singleQuote": true,
-  "tabWidth": 2,
-  "useTabs": false,
-  "trailingComma": "es5",
+  "trailingComma": "all",
   "printWidth": 80,
-  "endOfLine": "lf",
-  "jsxSingleQuote": false,
-  "bracketSpacing": true,
-  "arrowParens": "always",
-  "proseWrap": "preserve",
-  "htmlWhitespaceSensitivity": "css"
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
+  ],
+  "tailwindFunctions": ["cn"],
+  "tailwindConfig": "./tailwind.config.ts",
+  "importOrder": [
+    "^@/lib/(.*)$",
+    "^@/types/(.*)$",
+    "^@/db/(.*)$",
+    "^@/auth/(.*)$",
+    "^@/components/(.*)$",
+    "^@/hooks/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

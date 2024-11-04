@@ -1,10 +1,10 @@
-import { getLocationsAction } from './actions';
+import dynamic from "next/dynamic";
 
-import { searchParamsCache } from '@/lib/search-params';
+import { searchParamsCache } from "@/lib/search-params";
 
-import dynamic from 'next/dynamic';
+import { getLocationsAction } from "./actions";
 
-const ClientHomePage = dynamic(() => import('./page.client'), {
+const ClientHomePage = dynamic(() => import("./page.client"), {
   ssr: false,
 });
 

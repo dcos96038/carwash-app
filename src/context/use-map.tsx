@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
-import { useCoordinates } from '@/hooks/use-coordinates';
-import type { Map as MapType } from 'leaflet';
-import { createContext, useContext, useEffect, useState } from 'react';
+import type { Map as MapType } from "leaflet";
+import { createContext, useContext, useEffect, useState } from "react";
+
+import { useCoordinates } from "@/hooks/use-coordinates";
 
 interface ContextProps {
   map: MapType | null;
@@ -16,7 +17,7 @@ export function useMap() {
   const context = useContext(MapContext);
 
   if (!context) {
-    throw new Error('useMap must be used within a MapProvider');
+    throw new Error("useMap must be used within a MapProvider");
   }
 
   return context;
@@ -47,10 +48,10 @@ export const MapProvider: React.FC<{ children: React.ReactNode }> = ({
       setSeLng(bounds.getSouthEast().lng);
     };
 
-    map.on('moveend', onBoundsChange);
+    map.on("moveend", onBoundsChange);
 
     return () => {
-      map.off('moveend', onBoundsChange);
+      map.off("moveend", onBoundsChange);
     };
   }, [map, setNwLat, setNwLng, setSeLat, setSeLng]);
 

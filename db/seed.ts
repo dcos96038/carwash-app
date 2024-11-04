@@ -85,7 +85,7 @@ async function main() {
 
     console.log('Seeding carwash locations...');
     await db.insert(carwash).values(seedData);
-    console.log('Seeding completed!');
+    console.log("Seeding completed!");
   }
 
   return;

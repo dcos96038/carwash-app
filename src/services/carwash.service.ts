@@ -1,8 +1,11 @@
-import type { Carwash } from '@/types/carwash.types';
-import { db } from '../../db';
-import { carwash } from '../../db/schema/carwash';
-import { CreateCarwash } from '@/app/(authenticated)/admin/carwash/schemas';
-import { CommonOptions } from '@/types/common.types';
+import { CreateCarwash } from "@/app/(authenticated)/admin/carwash/schemas";
+import { asc, desc, ilike } from "drizzle-orm";
+
+import type { Carwash } from "@/types/carwash.types";
+import { CommonOptions } from "@/types/common.types";
+
+import { db } from "../../db";
+import { carwash } from "../../db/schema/carwash";
 
 export class CarwashService {
   private readonly db = db;
@@ -19,12 +22,12 @@ export class CarwashService {
           between(
             locations.latitude,
             coords.northWestLat,
-            coords.southEastLat
+            coords.southEastLat,
           ) &&
           between(
             locations.longitude,
             coords.northWestLng,
-            coords.southEastLng
+            coords.southEastLng,
           ),
       }),
     });
@@ -40,24 +43,22 @@ export class CarwashService {
   async getMany(options: CommonOptions<Carwash>): Promise<Carwash[]> {
     const { page, limit, sortBy, filter } = options;
 
+    const orderBy =
+      sortBy?.map(({ id, desc: sortDesc }) => {
+        if (sortDesc) {
+          return desc(carwash[id as keyof Carwash]);
+        } else {
+          return asc(carwash[id as keyof Carwash]);
+        }
+      }) || [];
+
+    const where = filter && ilike(carwash[filter.key], `%${filter.value}%`);
+
     const results = await this.db.query.carwash.findMany({
       limit,
       offset: page * limit,
-      ...(sortBy && {
-        orderBy: (carwash, { asc, desc }) =>
-          Object.entries(sortBy).map(([key, value]) => {
-            const columnKey = key as keyof Carwash;
-            return value === 'asc'
-              ? asc(carwash[columnKey])
-              : desc(carwash[columnKey]);
-          }),
-      }),
-      ...(filter && {
-        where: (carwash, { ilike }) => {
-          const columnKey = filter.key as keyof Carwash;
-          return ilike(carwash[columnKey], `%${filter.value}%`);
-        },
-      }),
+      orderBy,
+      where,
     });
 
     return results;
@@ -73,7 +74,7 @@ export class CarwashService {
     const insertedCarwash = result.pop();
 
     if (!insertedCarwash) {
-      throw new Error('Failed to insert carwash');
+      throw new Error("Failed to insert carwash");
     }
 
     return insertedCarwash;

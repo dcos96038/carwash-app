@@ -1,36 +1,50 @@
-import { PaginationState } from '@tanstack/react-table';
+import { SortingState } from "@tanstack/react-table";
 import {
+  createParser,
   createSearchParamsCache,
   parseAsFloat,
+  parseAsInteger,
   parseAsJson,
-} from 'nuqs/server';
-import z from 'zod';
-import { Constants } from './constants';
+} from "nuqs/server";
+import z from "zod";
 
-const paginationSchema = z.custom<PaginationState>((value) => {
-  if (value.page < 0) {
-    throw new Error('Page cannot be less than 0');
-  }
+import { Constants } from "./constants";
 
-  if (value.limit < 1) {
-    throw new Error('Limit cannot be less than 1');
-  }
-
-  return value;
+export const pageIndexParser = createParser({
+  parse: (query) => {
+    const page = parseAsInteger.parse(query);
+    return page === null ? null : page - 1;
+  },
+  serialize: (value) => {
+    return parseAsInteger.serialize(value + 1);
+  },
 });
 
-export const paginationParser = parseAsJson(paginationSchema.parse).withDefault(
+export const paginationParsers = {
+  pageIndex: pageIndexParser.withDefault(0),
+  pageSize: parseAsInteger.withDefault(Constants.ITEMS_PER_PAGE),
+};
+
+export const paginationUrlKeys = {
+  pageIndex: "page",
+  pageSize: "perPage",
+};
+
+const sortingSchema = z.custom<SortingState>((value) => value);
+
+export const sortingParser = parseAsJson(sortingSchema.parse).withDefault([
   {
-    pageIndex: 0,
-    pageSize: Constants.ITEMS_PER_PAGE,
-  }
-);
+    id: "createdAt",
+    desc: true,
+  },
+]);
 
 export const searchParamsCache = createSearchParamsCache({
-  // List your search param keys and associated parsers here:
   nwLat: parseAsFloat.withDefault(0),
   nwLng: parseAsFloat.withDefault(0),
   seLat: parseAsFloat.withDefault(0),
   seLng: parseAsFloat.withDefault(0),
-  pagination: paginationParser,
+  page: paginationParsers.pageIndex,
+  perPage: paginationParsers.pageSize,
+  sorting: sortingParser,
 });

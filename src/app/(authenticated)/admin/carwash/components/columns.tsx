@@ -1,16 +1,18 @@
-'use client';
+"use client";
 
-import { Carwash } from '@/types/carwash.types';
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef } from "@tanstack/react-table";
+
+import { Carwash } from "@/types/carwash.types";
 
 export const carwashColumns: ColumnDef<Carwash>[] = [
   {
-    accessorKey: 'name',
-    header: 'Name',
+    accessorKey: "name",
+    header: "Name",
   },
   {
-    accessorKey: 'coords',
-    header: 'Coords',
+    accessorKey: "coords",
+    header: "Coords",
+    enableSorting: false,
     cell: ({ row }) => (
       <span>
         {row.original.latitude}, {row.original.longitude}
@@ -18,19 +20,19 @@ export const carwashColumns: ColumnDef<Carwash>[] = [
     ),
   },
   {
-    accessorKey: 'address',
-    header: 'Address',
+    accessorKey: "address",
+    header: "Address",
   },
   {
-    accessorKey: 'contactNumber',
-    header: 'Phone',
+    accessorKey: "contactNumber",
+    header: "Phone",
   },
   {
-    accessorKey: 'email',
-    header: 'Email',
+    accessorKey: "email",
+    header: "Email",
   },
   {
-    accessorKey: 'status',
-    header: 'Status',
+    accessorKey: "status",
+    header: "Status",
   },
 ];

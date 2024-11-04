@@ -1,8 +1,8 @@
-import { useQueryState, parseAsString } from 'nuqs';
-import { useDebounceCallback } from 'usehooks-ts';
+import { parseAsString, useQueryState } from "nuqs";
+import { useDebounceCallback } from "usehooks-ts";
 
 export const useSearchQuery = () => {
-  const [query, setQuery] = useQueryState('q', {
+  const [query, setQuery] = useQueryState("q", {
     ...parseAsString,
     throttleMs: 3000,
   });

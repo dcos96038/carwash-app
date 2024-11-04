@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { Check, ChevronsUpDown } from 'lucide-react';
+import { Check, ChevronsUpDown } from "lucide-react";
+import * as React from "react";
 
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import { cn } from "@/lib/utils";
+
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -12,12 +13,12 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '@/components/ui/command';
+} from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
+} from "@/components/ui/popover";
 
 interface ComboboxProps {
   value: string;
@@ -32,7 +33,7 @@ export function ComboBox({
   value,
   options,
   placeholder,
-  className = '',
+  className = "",
 }: ComboboxProps) {
   const [open, setOpen] = React.useState(false);
 
@@ -43,7 +44,7 @@ export function ComboBox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={cn('w-[200px] justify-between', className)}
+          className={cn("w-[200px] justify-between", className)}
         >
           {value ? options.find((o) => o.value === value)?.label : placeholder}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -61,14 +62,14 @@ export function ComboBox({
                   value={o.value}
                   keywords={[o.label]}
                   onSelect={(currentValue) => {
-                    onChange(currentValue === value ? '' : currentValue);
+                    onChange(currentValue === value ? "" : currentValue);
                     setOpen(false);
                   }}
                 >
                   <Check
                     className={cn(
-                      'mr-2 h-4 w-4',
-                      value === o.value ? 'opacity-100' : 'opacity-0'
+                      "mr-2 h-4 w-4",
+                      value === o.value ? "opacity-100" : "opacity-0",
                     )}
                   />
                   {o.label}

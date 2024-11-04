@@ -1,18 +1,21 @@
-'use client';
+"use client";
 
-import { useMap } from '@/context/use-map';
-import type { Carwash } from '@/types/carwash.types';
-import { icon } from 'leaflet';
-import { useEffect, useState } from 'react';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
-import { Sidebar } from './components/sidebar';
-import { useCoordinates } from '@/hooks/use-coordinates';
-import { getLocationsAction } from './actions';
-import { SearchDrawer } from './components/search-drawer';
-import { useAction } from 'next-safe-action/hooks';
+import { useMap } from "@/context/use-map";
+import { icon } from "leaflet";
+import { useAction } from "next-safe-action/hooks";
+import { useEffect, useState } from "react";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+
+import type { Carwash } from "@/types/carwash.types";
+
+import { useCoordinates } from "@/hooks/use-coordinates";
+
+import { getLocationsAction } from "./actions";
+import { SearchDrawer } from "./components/search-drawer";
+import { Sidebar } from "./components/sidebar";
 
 const locationMarker = icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png',
+  iconUrl: "https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png",
   iconSize: [25, 41],
   iconAnchor: [10, 41],
   popupAnchor: [2, -40],
@@ -26,10 +29,10 @@ export default function ClientHomePage({
   const [carwashLocations, setCarwashLocations] =
     useState<Carwash[]>(locations);
   const [userLocation, setUserLocation] = useState<GeolocationPosition | null>(
-    null
+    null,
   );
   const [userLocationError, setUserLocationError] = useState<string | null>(
-    null
+    null,
   );
 
   const { setMap } = useMap();
@@ -45,7 +48,7 @@ export default function ClientHomePage({
   });
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.navigator.geolocation) {
+    if (typeof window !== "undefined" && window.navigator.geolocation) {
       window.navigator.geolocation.getCurrentPosition(
         (position) => {
           setUserLocation(position);
@@ -58,10 +61,10 @@ export default function ClientHomePage({
           enableHighAccuracy: false,
           timeout: 20000,
           maximumAge: Number.POSITIVE_INFINITY,
-        }
+        },
       );
     } else {
-      console.log('Geolocation is not supported by this browser.');
+      console.log("Geolocation is not supported by this browser.");
     }
   }, []);
 
@@ -93,16 +96,16 @@ export default function ClientHomePage({
   return (
     <>
       <Sidebar locations={carwashLocations || []} />
-      <div className="rounded-lg w-full overflow-hidden relative">
+      <div className="relative w-full overflow-hidden rounded-lg">
         {userLocation ? (
           <>
-            <div className="absolute z-[1000] bottom-10 right-10">
+            <div className="absolute bottom-10 right-10 z-[1000]">
               <SearchDrawer />
             </div>
             <MapContainer
               zoom={70}
               scrollWheelZoom={false}
-              style={{ height: '100vh', width: '100%' }}
+              style={{ height: "100vh", width: "100%" }}
               trackResize={true}
               center={[
                 userLocation.coords.latitude,

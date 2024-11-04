@@ -1,10 +1,12 @@
-import { createInsertSchema } from 'drizzle-zod';
-import { carwash } from '../../../../../db/schema/carwash';
-import z from 'zod';
-import { InferSafeActionFnResult } from 'next-safe-action';
-import { getUsersForCombobox } from './actions';
-import { CommonOptions } from '@/types/common.types';
-import { Carwash } from '@/types/carwash.types';
+import { createInsertSchema } from "drizzle-zod";
+import { InferSafeActionFnResult } from "next-safe-action";
+import z from "zod";
+
+import { Carwash } from "@/types/carwash.types";
+import { CommonOptions } from "@/types/common.types";
+
+import { carwash } from "../../../../../db/schema/carwash";
+import { getUsersForCombobox } from "./actions";
 
 export const createCarwashSchema = createInsertSchema(carwash, {
   name: z.string().min(3).max(100),
@@ -27,36 +29,18 @@ export type CreateCarwash = z.infer<typeof createCarwashSchema>;
 
 export type UsersForCombobox = InferSafeActionFnResult<
   typeof getUsersForCombobox
->['data'];
+>["data"];
 
 export const getCarwashesInputSchema = z.custom<CommonOptions<Carwash>>(
   (value) => {
-    if (typeof value.page !== 'number') {
-      throw new Error('page must be a number');
+    if (typeof value.page !== "number") {
+      throw new Error("page must be a number");
     }
 
-    if (typeof value.limit !== 'number') {
-      throw new Error('limit must be a number');
-    }
-
-    if (value.sortBy) {
-      for (const key in value.sortBy) {
-        if (value.sortBy[key] !== 'asc' && value.sortBy[key] !== 'desc') {
-          throw new Error('sortBy must be either "asc" or "desc"');
-        }
-      }
-    }
-
-    if (value.filter) {
-      if (typeof value.filter.key !== 'string') {
-        throw new Error('filter.key must be a string');
-      }
-
-      if (typeof value.filter.value !== 'string') {
-        throw new Error('filter.value must be a string');
-      }
+    if (typeof value.limit !== "number") {
+      throw new Error("limit must be a number");
     }
 
     return value;
-  }
+  },
 );

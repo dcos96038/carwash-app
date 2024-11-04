@@ -11,11 +11,11 @@ export default async function Page({
 }: {
   searchParams: Record<string, string | string[] | undefined>;
 }) {
-  const { pagination } = searchParamsCache.parse(searchParams);
+  const { page, perPage } = searchParamsCache.parse(searchParams);
   const vehicleTypes = await getVehicleTypesForCombobox();
   const services = await getServices({
-    limit: pagination.pageSize,
-    page: pagination.pageIndex,
+    limit: perPage,
+    page,
   });
 
   return (

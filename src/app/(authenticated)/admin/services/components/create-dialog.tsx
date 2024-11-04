@@ -6,7 +6,6 @@ import { useAction } from "next-safe-action/hooks";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -92,7 +91,11 @@ export const CreateServiceDialog: React.FC<CreateVehicleTypeDialogProps> = ({
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="Example Description" {...field} />
+                  <Input
+                    placeholder="Example Description"
+                    {...field}
+                    value={field.value || ""}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -177,8 +180,7 @@ export const CreateServiceDialog: React.FC<CreateVehicleTypeDialogProps> = ({
           </div> */}
 
           <Button disabled={isExecuting} onClick={onSubmit}>
-            {" "}
-            //TODO: fix this Create Service
+            Create Service
           </Button>
         </Form>
       </DialogContent>

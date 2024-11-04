@@ -1,14 +1,11 @@
 "use server";
 
 import { ServicesService as ServiceService } from "@/services/services.service";
-import { UserService } from "@/services/user.service";
 
 import { authActionClient } from "@/lib/safe-action-clients";
-import { createEnum } from "@/lib/utils";
 
 import { VehicleTypeEnum } from "@/types/services.types";
 
-import { vehicleType } from "../../../../../db/schema/service";
 import { createServiceSchema, getServicesInputSchema } from "./schemas";
 
 export const createService = authActionClient
@@ -46,7 +43,7 @@ export const getVehicleTypesForCombobox = authActionClient
     actionName: "getVehicleTypesForCombobox",
   })
   .action(async () => {
-    return Object.entries(VehicleTypeEnum).map(([key, value]) => {
+    return Object.entries(VehicleTypeEnum).map(([, value]) => {
       return {
         label: value.charAt(0).toUpperCase() + value.slice(1),
         value: value,

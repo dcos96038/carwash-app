@@ -224,7 +224,7 @@ export const CreateCarwashDialog: React.FC<CreateCarwashDialogProps> = ({
                     <span className="text-gray-400"> (HH:MM)</span>
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="08:00" {...field} />
+                    <Input type="time" placeholder="08:00" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -240,7 +240,7 @@ export const CreateCarwashDialog: React.FC<CreateCarwashDialogProps> = ({
                     <span className="text-gray-400"> (HH:MM)</span>
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="08:00" {...field} />
+                    <Input type="time" placeholder="08:00" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

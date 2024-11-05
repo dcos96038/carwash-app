@@ -8,6 +8,8 @@ import {
 } from "@tanstack/react-table";
 import { ArrowUpDown, SortAsc, SortDesc } from "lucide-react";
 
+import { cn } from "@/lib/utils";
+
 import {
   Table,
   TableBody,
@@ -58,10 +60,14 @@ export function DataTable<TData, TValue>({
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
+              {headerGroup.headers.map((header, idx) => {
                 return (
                   <TableHead key={header.id}>
-                    <div className="flex items-center gap-1">
+                    <div
+                      className={cn("flex items-center gap-1", {
+                        "justify-end": idx === columns.length - 1,
+                      })}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -98,8 +104,11 @@ export function DataTable<TData, TValue>({
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
               >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                {row.getVisibleCells().map((cell, idx) => (
+                  <TableCell
+                    align={columns.length - 1 === idx ? "right" : "left"}
+                    key={cell.id}
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}

@@ -2,24 +2,10 @@
 
 import { CarwashService } from "@/services/carwash.service";
 import { UserService } from "@/services/user.service";
-import { redirect } from "next/navigation";
 
 import { authActionClient } from "@/lib/safe-action-clients";
 
-import { createCarwashSchema, getCarwashesInputSchema } from "./schemas";
-
-export const createCarwash = authActionClient
-  .metadata({
-    actionName: "createCarwash",
-  })
-  .schema(createCarwashSchema)
-  .action(async ({ parsedInput }) => {
-    const carwashService = new CarwashService();
-
-    await carwashService.insertCarwash(parsedInput);
-
-    redirect("/admin/carwash");
-  });
+import { getCarwashesInputSchema } from "./schemas";
 
 export const getUsersForCombobox = authActionClient
   .metadata({

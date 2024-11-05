@@ -1,7 +1,10 @@
-import { CreateCarwash } from "@/app/(authenticated)/admin/carwash/schemas";
-import { asc, desc, ilike } from "drizzle-orm";
+import { asc, desc, eq, ilike } from "drizzle-orm";
 
-import type { Carwash } from "@/types/carwash.types";
+import type {
+  Carwash,
+  CarwashInsert,
+  CarwashUpdate,
+} from "@/types/carwash.types";
 import { CommonOptions } from "@/types/common.types";
 
 import { db } from "../../db";
@@ -68,7 +71,19 @@ export class CarwashService {
     return await this.db.$count(carwash);
   }
 
-  async insertCarwash(input: CreateCarwash): Promise<Carwash> {
+  async getById(id: string): Promise<Carwash> {
+    const result = await this.db.query.carwash.findFirst({
+      where: eq(carwash.id, id),
+    });
+
+    if (!result) {
+      throw new Error("Carwash not found");
+    }
+
+    return result;
+  }
+
+  async insert(input: CarwashInsert): Promise<Carwash> {
     const result = await this.db.insert(carwash).values([input]).returning();
 
     const insertedCarwash = result.pop();
@@ -78,5 +93,13 @@ export class CarwashService {
     }
 
     return insertedCarwash;
+  }
+
+  async update(input: CarwashUpdate): Promise<void> {
+    if (!input.id) {
+      throw new Error("Carwash id is required");
+    }
+
+    await this.db.update(carwash).set(input).where(eq(carwash.id, input.id));
   }
 }

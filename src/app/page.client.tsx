@@ -26,8 +26,6 @@ export default function ClientHomePage({
 }: {
   locations: Carwash[];
 }) {
-  console.log("RENDER");
-
   const [carwashLocations, setCarwashLocations] =
     useState<Carwash[]>(locations);
 

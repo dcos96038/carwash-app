@@ -26,18 +26,15 @@ export default function ClientHomePage({
 }: {
   locations: Carwash[];
 }) {
+  console.log("RENDER");
+
   const [carwashLocations, setCarwashLocations] =
     useState<Carwash[]>(locations);
-  const [userLocation, setUserLocation] = useState<GeolocationPosition | null>(
-    null,
-  );
-  const [userLocationError, setUserLocationError] = useState<string | null>(
-    null,
-  );
 
-  const { setMap } = useMap();
+  const { setMap, moveMap } = useMap();
 
   const { nwLat, nwLng, seLat, seLng } = useCoordinates();
+  const [userLocation, setUserLocation] = useState<GeolocationPosition>();
 
   const { execute } = useAction(getLocationsAction, {
     onSuccess: ({ data }) => {
@@ -51,12 +48,11 @@ export default function ClientHomePage({
     if (typeof window !== "undefined" && window.navigator.geolocation) {
       window.navigator.geolocation.getCurrentPosition(
         (position) => {
+          moveMap(position.coords.latitude, position.coords.longitude);
+
           setUserLocation(position);
         },
-        (error) => {
-          console.log(`Error getting location: ${error.message}`);
-          setUserLocationError(error.message);
-        },
+        () => {},
         {
           enableHighAccuracy: false,
           timeout: 20000,
@@ -66,7 +62,7 @@ export default function ClientHomePage({
     } else {
       console.log("Geolocation is not supported by this browser.");
     }
-  }, []);
+  }, [moveMap]);
 
   useEffect(() => {
     const fetchMarkers = async () => {
@@ -85,39 +81,27 @@ export default function ClientHomePage({
     fetchMarkers();
   }, [execute, nwLat, nwLng, seLat, seLng]);
 
-  if (userLocationError) {
-    return (
-      <div className="text-center text-red-500">
-        {userLocationError}. Please enable location services.
-      </div>
-    );
-  }
-
   return (
     <>
       <Sidebar locations={carwashLocations || []} />
       <div className="relative w-full overflow-hidden rounded-lg">
-        {userLocation ? (
-          <>
-            <div className="absolute bottom-10 right-10 z-[1000]">
-              <SearchDrawer />
-            </div>
-            <MapContainer
-              zoom={70}
-              scrollWheelZoom={false}
-              style={{ height: "100vh", width: "100%" }}
-              trackResize={true}
-              center={[
-                userLocation.coords.latitude,
-                userLocation.coords.longitude,
-              ]}
-              ref={setMap}
-            >
-              <TileLayer
-                className="bg-blue-500"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
+        <div>
+          <div className="absolute bottom-10 right-10 z-[1000]">
+            <SearchDrawer />
+          </div>
+          <MapContainer
+            zoom={70}
+            scrollWheelZoom={false}
+            style={{ height: "100vh", width: "100%" }}
+            trackResize={true}
+            center={[51.505, -0.09]}
+            ref={setMap}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            {userLocation && (
               <Marker
                 icon={locationMarker}
                 position={[
@@ -129,22 +113,20 @@ export default function ClientHomePage({
                   <h2>Your Location</h2>
                 </Popup>
               </Marker>
-              {carwashLocations.map((marker) => (
-                <Marker
-                  icon={locationMarker}
-                  key={marker.id}
-                  position={[marker.latitude, marker.longitude]}
-                >
-                  <Popup>
-                    <h2>{marker.name}</h2>
-                  </Popup>
-                </Marker>
-              ))}
-            </MapContainer>
-          </>
-        ) : (
-          <div className="text-center text-gray-400">Loading...</div>
-        )}
+            )}
+            {carwashLocations.map((marker) => (
+              <Marker
+                icon={locationMarker}
+                key={marker.id}
+                position={[marker.latitude, marker.longitude]}
+              >
+                <Popup>
+                  <h2>{marker.name}</h2>
+                </Popup>
+              </Marker>
+            ))}
+          </MapContainer>
+        </div>
       </div>
     </>
   );

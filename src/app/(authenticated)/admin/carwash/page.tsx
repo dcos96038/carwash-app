@@ -6,11 +6,12 @@ import { getCarwashes, getUsersForCombobox } from "./actions";
 import { carwashColumns } from "./components/columns";
 import { CreateCarwashDialog } from "./components/create-dialog";
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: Record<string, string | string[] | undefined>;
-}) {
+export default async function Page(
+  props: {
+    searchParams: Promise<Record<string, string | string[] | undefined>>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const { page, perPage, sorting } = searchParamsCache.parse(searchParams);
 
   const users = await getUsersForCombobox();

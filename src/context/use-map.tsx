@@ -1,7 +1,13 @@
 "use client";
 
 import type { Map as MapType } from "leaflet";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 import { useCoordinates } from "@/hooks/use-coordinates";
 
@@ -30,12 +36,15 @@ export const MapProvider: React.FC<{ children: React.ReactNode }> = ({
   const { setNwLat, setNwLng, setSeLat, setSeLng, seLng, nwLat, nwLng, seLat } =
     useCoordinates();
 
-  const moveMap = (lat: number, lng: number) => {
-    if (!map) return;
+  const moveMap = useCallback(
+    (lat: number, lng: number) => {
+      if (!map) return;
 
-    map.setZoomAround([lat, lng], 100);
-    map.panTo([lat, lng]);
-  };
+      map.setZoomAround([lat, lng], 100);
+      map.panTo([lat, lng]);
+    },
+    [map],
+  );
 
   useEffect(() => {
     if (!map) return;

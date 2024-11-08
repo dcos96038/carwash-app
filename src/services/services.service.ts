@@ -1,4 +1,4 @@
-import { CreateService } from "@/app/(authenticated)/admin/services/schemas";
+import { CreateService } from "@/app/(authenticated)/dashboard/services/schemas";
 
 import { CommonOptions } from "@/types/common.types";
 import { Service } from "@/types/services.types";

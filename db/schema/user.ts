@@ -6,10 +6,10 @@ import {
   text,
   timestamp,
   uuid,
-} from "drizzle-orm/pg-core";
-import type { AdapterAccountType } from "next-auth/adapters";
-
-import { defaultColumns } from "../lib";
+} from 'drizzle-orm/pg-core';
+import type { AdapterAccountType } from 'next-auth/adapters';
+import { defaultColumns } from '../lib';
+import crypto from 'crypto';
 
 export const roles = pgEnum("role", ["USER", "ADMIN"]);
 

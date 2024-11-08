@@ -27,6 +27,11 @@ const items = [
     url: "/admin/carwash",
     icon: Car,
   },
+  {
+    title: "Services",
+    url: "/dashboard/services",
+    icon: Car,
+  },
   // {
   //   title: "Calendar",
   //   url: "#",

@@ -102,4 +102,9 @@ export class CarwashService {
 
     await this.db.update(carwash).set(input).where(eq(carwash.id, input.id));
   }
+
+  async getCarwashLength(): Promise<number> {
+    const carwash = await this.db.query.carwash.findMany();
+    return carwash.length;
+  }
 }

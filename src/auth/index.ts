@@ -26,7 +26,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async session({ session }) {
       const userService = new UserService();
-      const dbUser = await userService.getByEmail(session.user.email);
+      const dbUser = await userService.getUserFromDb(session.user.email);
 
       if (dbUser) {
         session.user.id = dbUser.id;

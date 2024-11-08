@@ -1,7 +1,7 @@
 "use client";
 
-import { CarFront, LogOutIcon } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
+import { CarFront } from "lucide-react";
+// import { signOut } from "next-auth/react";
 import Link from "next/link";
 
 import type { Carwash } from "@/types/carwash.types";
@@ -15,15 +15,13 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ locations }) => {
-  const session = useSession();
-
   return (
     <div className="flex min-w-96 flex-col gap-4 px-4 pt-6 text-gray-200">
       <div className="flex items-center justify-center gap-1">
         <CarFront />
         <h1 className="text-center text-xl font-semibold">Carwash App</h1>
       </div>
-      {session.status === "authenticated" && (
+      {/* {session.status === "authenticated" && (
         <div className="flex items-center justify-between">
           <p className="text-sm italic text-gray-500">
             Logged in as {session.data.user.email}
@@ -39,7 +37,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ locations }) => {
             Logout <LogOutIcon size={14} />
           </Button>
         </div>
-      )}
+      )} */}
       <Button asChild>
         <Link href={"/dashboard"}>Dashboard</Link>
       </Button>

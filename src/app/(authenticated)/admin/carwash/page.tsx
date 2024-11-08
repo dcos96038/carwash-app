@@ -1,19 +1,20 @@
+import { PlusCircle } from "lucide-react";
+import Link from "next/link";
+
 import { searchParamsCache } from "@/lib/search-params";
 
 import { DataTable } from "@/components/data-table";
+import { Button } from "@/components/ui/button";
 
-import { getCarwashes, getUsersForCombobox } from "./actions";
+import { getCarwashes } from "./actions";
 import { carwashColumns } from "./components/columns";
-import { CreateCarwashDialog } from "./components/create-dialog";
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: Record<string, string | string[] | undefined>;
+export default async function Page(props: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
+  const searchParams = await props.searchParams;
   const { page, perPage, sorting } = searchParamsCache.parse(searchParams);
 
-  const users = await getUsersForCombobox();
   const carwashes = await getCarwashes({
     page,
     limit: perPage,
@@ -24,7 +25,11 @@ export default async function Page({
     <div className="flex h-full w-full flex-col gap-5 p-10">
       <div className="flex">
         <h1 className="text-2xl font-semibold">Carwash List</h1>
-        <CreateCarwashDialog users={users?.data} />
+        <Button className="ml-auto" size={"sm"} asChild>
+          <Link href="/admin/carwash/create">
+            <PlusCircle className="ml-2" /> Create Carwash
+          </Link>
+        </Button>
       </div>
       <DataTable
         columns={carwashColumns}
